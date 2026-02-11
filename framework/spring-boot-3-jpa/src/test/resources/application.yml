@@ -1,0 +1,9 @@
+server:
+  port: 17777
+
+spring:
+  application:
+    name: Ako
+  jpa:
+    hibernate:
+      ddl-auto: update
