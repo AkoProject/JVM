@@ -206,6 +206,12 @@ val Field.dbField: DbField
 
             enum = value.toList()
         }
+        annotation<DbFlag> {
+            type = ValueType.Type.ENUM.type
+            subtype = ValueType.Type.ENUM.subtype
+
+            enum = value.toList()
+        }
 
         fun editInfo(): EditInfo? {
             if (editIgnore) return null
