@@ -53,7 +53,7 @@ class AkoRainModelContext<T : AkoModel>(
 
     }
 
-    override fun save(data: T) = access.save(data)
+    override fun save(data: T) = access.saveOrUpdate(data)
 
     override fun delete(id: Int) = access.delete(id)
 
