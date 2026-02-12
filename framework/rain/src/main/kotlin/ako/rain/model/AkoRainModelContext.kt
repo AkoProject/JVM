@@ -14,8 +14,8 @@ class AkoRainModelContext<T : AkoModel>(
     val access: AkoAccess<T>
 ) : ModelContext<T> {
 
-    companion object{
-        fun <T: AkoModel> create(
+    companion object {
+        fun <T : AkoModel> create(
             name: String,
             model: DbModel<out T>,
             access: AkoAccess<*>
@@ -34,6 +34,8 @@ class AkoRainModelContext<T : AkoModel>(
         else access.whereQuery(params)
     }
 
+    val convertMap = model.fields.associate { it.id to it::convert }
+
     override fun wherePage(
         params: Map<String, Any>?,
         sort: Map<String, String>?,
@@ -42,7 +44,8 @@ class AkoRainModelContext<T : AkoModel>(
     ): PageResp<T> = access.wherePage(
         params ?: emptyMap(),
         Page((pid - 1) * pSize, pSize),
-        sort = sort
+        sort = sort,
+        converts = convertMap,
     ).let { PageResp(pid, pSize, it.total.toInt(), it.data) }
 
     override fun akoPreSave(data: T) {

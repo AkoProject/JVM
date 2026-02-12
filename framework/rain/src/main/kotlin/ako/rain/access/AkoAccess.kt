@@ -12,7 +12,11 @@ import smartaccess.jpa.access.JpaAccess
 interface AkoAccess<T : AkoModel> : JpaAccess<T, Int> {
 
     companion object {
-        fun margeWhereQuery(query: StringBuilder, paras: Map<String, Any?>): Array<Any?> {
+        fun margeWhereQuery(
+            query: StringBuilder,
+            paras: Map<String, Any?>,
+            converts: Map<String, (Any?) -> Any?>? = null
+        ): Array<Any?> {
             paras["deleteTime-isNull"]
             val paramList = ArrayList<Any?>()
             paras.forEach { (k, v) ->
@@ -37,7 +41,7 @@ interface AkoAccess<T : AkoModel> : JpaAccess<T, Int> {
                     }
                 }
 
-                if (opt.second) paramList.add(v)
+                if (opt.second) run { converts?.get(name)?.invoke(v) ?: v }?.let { paramList.add(it) }
                 query.append(" and $name ${opt.first} ${if (opt.second) "?${paramList.size}" else ""}")
             }
             return paramList.toTypedArray()
@@ -107,9 +111,11 @@ interface AkoAccess<T : AkoModel> : JpaAccess<T, Int> {
         page: Page = Page(0, 10),
         orderBy: String = "ASC",
         sort: Map<String, String>? = null,
+        converts: Map<String, (Any?) -> Any?>? = null
     ): PageResult<T> {
         val queryBuilder = StringBuilder("from $modelName where 1=1")
-        val paramList = margeWhereQuery(queryBuilder, paras)
+        val paramList = margeWhereQuery(queryBuilder, paras, converts)
+        val query = queryBuilder.toString()
 
         sort?.takeIf { it.isNotEmpty() }?.let {
             queryBuilder.append(" order by ")
@@ -123,7 +129,10 @@ interface AkoAccess<T : AkoModel> : JpaAccess<T, Int> {
 //            queryBuilder.deleteCharAt(queryBuilder.length - 1)
 //        }
 
-        return PageResult(countQuery(paras), list(queryBuilder.toString(), page = page, *paramList))
+        return PageResult(
+            count("select count(id) $query", *paramList),
+            list(query, page = page, *paramList)
+        )
     }
 
 }
