@@ -9,7 +9,6 @@ import org.hibernate.annotations.Filter
 import org.hibernate.annotations.FilterDef
 
 @MappedSuperclass
-@FilterDef(name = "_ako_soft_delete")
 @Filter(name = "_ako_soft_delete", condition = "delete_time = 0")
 abstract class SoftDeleteModel : AkoModelBase() {
 

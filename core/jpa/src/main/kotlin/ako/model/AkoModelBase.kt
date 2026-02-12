@@ -11,8 +11,10 @@ import jakarta.persistence.Column
 import jakarta.persistence.MappedSuperclass
 import jakarta.persistence.PrePersist
 import jakarta.persistence.PreUpdate
+import org.hibernate.annotations.FilterDef
 
 @MappedSuperclass
+@FilterDef(name = "_ako_soft_delete")
 abstract class AkoModelBase : AkoModel {
 
 
