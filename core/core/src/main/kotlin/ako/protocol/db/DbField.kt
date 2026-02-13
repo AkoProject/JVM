@@ -1,8 +1,12 @@
 package ako.protocol.db
 
+import ako.protocol.base.BaseField
+import ako.protocol.edit.EditField
 import ako.protocol.edit.EditInfo
+import ako.protocol.search.SearchField
 import ako.protocol.search.SearchInfo
 import ako.protocol.table.ColumnInfo
+import ako.protocol.table.TableField
 import com.alibaba.fastjson2.annotation.JSONField
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.lang.reflect.Field
@@ -12,20 +16,20 @@ data class DbField(
     @field:JSONField(serialize = false)
     val field: Field,
 
-    val id: String,
-    val name: String,
-    val description: String?,
+    override val id: String,
+    override val name: String,
+    override val description: String?,
 
-    val search: SearchInfo?,
-    val edit: EditInfo?,
-    val column: ColumnInfo?,
+    override val search: SearchInfo?,
+    override val edit: EditInfo?,
+    override val column: ColumnInfo?,
 
-    val type: Int,
-    val subtype: Int,
+    override val type: Int,
+    override val subtype: Int,
 
-    val content: String?,
-    val enum: List<String>?,
-) {
+    override val content: String?,
+    override val enum: List<String>?,
+) : BaseField, SearchField, EditField, TableField {
     operator fun get(instance: Any): Any? = field.apply { isAccessible = true }.get(instance)
 
     fun convert(value: Any?): Any? {

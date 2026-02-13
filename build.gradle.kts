@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.ako-dev"
-version = "0.0.2"
+version = "0.0.3"
 
 allprojects {
     repositories {
