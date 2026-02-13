@@ -60,7 +60,7 @@ annotation class ModelButton(
 ) {
     companion object {
         fun ModelButton.toModelButton() =
-            _root_ide_package_.ako.protocol.button.ButtonEntry(
+            ButtonEntry(
                 name,
                 index,
                 url,
@@ -71,7 +71,7 @@ annotation class ModelButton(
                 component.ifEmpty { null },
                 null,
                 dialog.takeIf { it.component != "" }?.let {
-                    _root_ide_package_.ako.protocol.button.ButtonDialogInfo(
+                    ButtonDialogInfo(
                         it.component,
                         it.title.ifEmpty { null },
                         it.style.ifEmpty { null },
