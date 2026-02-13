@@ -1,10 +1,10 @@
 package ako.rain.model
 
 import ako.access.AkoAccess
-import ako.model.protocol.db.DbModel
 import ako.model.base.ModelContext
 import ako.model.base.AkoModel
 import ako.model.resp.PageResp
+import ako.protocol.db.DbModel
 import smartaccess.item.Page
 
 class AkoRainModelContext<T : AkoModel>(

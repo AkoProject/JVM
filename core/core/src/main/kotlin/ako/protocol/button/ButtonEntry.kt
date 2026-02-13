@@ -11,4 +11,5 @@ data class ButtonEntry(
     val component: String? = null,
     val edit: ButtonEditInfo? = null,
     val dialog: ButtonDialogInfo? = null,
+    val panel: ButtonPanelInfo? = null,
 )

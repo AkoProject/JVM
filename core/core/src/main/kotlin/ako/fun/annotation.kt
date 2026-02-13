@@ -10,3 +10,13 @@ inline fun <reified T : Annotation> AnnotatedElement.annotation(body: T.() -> Un
 
 inline fun <reified T : Annotation> AnnotatedElement.hasAnnotation(): Boolean =
     getAnnotation(T::class.java)?.let { true } ?: false
+
+
+class AkoAnnotationContainer(private val annotations: Array<out Annotation>) : AnnotatedElement {
+    override fun <T : Annotation> getAnnotation(annotationClass: Class<T>): T? =
+        annotations.firstOrNull { annotationClass.isInstance(it) } as? T
+
+    override fun getAnnotations(): Array<out Annotation> = annotations
+
+    override fun getDeclaredAnnotations(): Array<out Annotation> = annotations
+}

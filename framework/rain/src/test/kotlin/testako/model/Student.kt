@@ -1,9 +1,13 @@
 package testako.model
 
 import ako.access.SoftDeleteAccess
+import ako.annotation.ButtonPanel
 import ako.annotation.DbEnum
+import ako.annotation.DbFlag
 import ako.annotation.DbName
 import ako.annotation.Mapping
+import ako.annotation.ModelButton
+import ako.annotation.PanelField
 import ako.`fun`.webError
 import ako.model.CompleteModel
 import ako.rain.`fun`.findAccess
@@ -14,6 +18,24 @@ import jakarta.persistence.Table
 @DbName("学生")
 @Entity
 @Table
+@ModelButton(
+    name = "绩点操作",
+    panel = ButtonPanel(
+        url = "/api/student/\${id}/point",
+        method = "patch",
+        fields = [
+            PanelField(
+                "mode",
+                name = DbName("操作模式"),
+                flag = DbFlag("true:增加", "false:设定")
+            ),
+            PanelField(
+                "point",
+                name = DbName("操作值"),
+            ),
+        ]
+    )
+)
 data class Student(
     @DbName("小组")
     @Mapping(Group::class, display = "name")

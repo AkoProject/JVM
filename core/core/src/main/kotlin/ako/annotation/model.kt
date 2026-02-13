@@ -1,7 +1,15 @@
 package ako.annotation
 
+import ako.annotation.ButtonPanel.Companion.toButtonPanelInfo
+import ako.annotation.PanelField.Companion.toCustomEditField
+import ako.`fun`.AkoAnnotationContainer
+import ako.`fun`.notEmptyOrNull
+import ako.`fun`.readFieldInfo
+import ako.model.base.AkoModel
 import ako.protocol.button.ButtonDialogInfo
 import ako.protocol.button.ButtonEntry
+import ako.protocol.button.ButtonPanelInfo
+import ako.protocol.edit.CustomEditField
 import kotlin.text.ifEmpty
 
 
@@ -56,7 +64,8 @@ annotation class ModelButton(
     val reconfirm: String = "",
     val type: String = "default",
     val component: String = "",
-    val dialog: ButtonDialog = ButtonDialog(component = "")
+    val dialog: ButtonDialog = ButtonDialog(component = ""),
+    val panel: ButtonPanel = ButtonPanel("", "")
 ) {
     companion object {
         fun ModelButton.toModelButton() =
@@ -79,7 +88,9 @@ annotation class ModelButton(
                         if (it.needSingle) true else null,
                         if (it.needMulti) true else null
                     )
-                }
+                },
+                panel.takeIf { it.id.isNotEmpty() || it.name.isNotEmpty() || it.url.isNotEmpty() || it.method.isNotEmpty() }
+                    ?.toButtonPanelInfo(),
             )
     }
 }
@@ -100,6 +111,66 @@ annotation class ButtonDialog(
     val needSingle: Boolean = false,
     val needMulti: Boolean = false
 )
+
+annotation class ButtonPanel(
+    val id: String = "",
+    val name: String = "",
+    val url: String = "",
+    val method: String = "",
+    vararg val fields: PanelField
+) {
+    companion object {
+        fun ButtonPanel.toButtonPanelInfo() =
+            ButtonPanelInfo(
+                id,
+                name,
+                url.notEmptyOrNull(),
+                method.notEmptyOrNull(),
+                "default-entity-edit-node",
+                fields.map { it.toCustomEditField(id) }
+            )
+    }
+}
+
+
+annotation class PanelField(
+    val id: String,
+    val nullable: Boolean = false,
+    val name: DbName = DbName(""),
+    val valueType: ValueType = ValueType(ValueType.Type.TEXT),
+    val enum: DbEnum = DbEnum(),
+    val enumEnum: EnumEnum = EnumEnum(""),
+    val flag: DbFlag = DbFlag(),
+    val mapping: Mapping = Mapping(AkoModel::class, display = ""),
+    val enumMapping: EnumMapping = EnumMapping(""),
+) {
+    companion object {
+        fun PanelField.toCustomEditField(model: String): CustomEditField {
+            val annotations = ArrayList<Annotation>()
+            if (name.value.isNotEmpty()) annotations.add(name)
+            if (valueType.value != ValueType.Type.TEXT) annotations.add(valueType)
+            if (enum.value.isNotEmpty()) annotations.add(enum)
+            if (enumEnum.value.isNotEmpty()) annotations.add(enumEnum)
+            if (flag.value.isNotEmpty()) annotations.add(flag)
+            if (mapping.value != AkoModel::class) annotations.add(mapping)
+            if (enumMapping.field.isNotEmpty()) annotations.add(enumMapping)
+            return AkoAnnotationContainer(annotations.toTypedArray())
+                .readFieldInfo(model, id, String::class.java, nullable)
+                .let {
+                    CustomEditField(
+                        it.id,
+                        it.name,
+                        it.description,
+                        it.type,
+                        it.subtype,
+                        it.content,
+                        it.enum,
+                        it.edit,
+                    )
+                }
+        }
+    }
+}
 
 /** 模型操作按钮
  * 如果提供该选项，则忽略所有直接提供的 ModelButton，使用该选项提供的 ModelButton。

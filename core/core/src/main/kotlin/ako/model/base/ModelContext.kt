@@ -1,7 +1,7 @@
 package ako.model.base
 
-import ako.model.protocol.db.DbModel
 import ako.model.resp.PageResp
+import ako.protocol.db.DbModel
 
 interface ModelContext<T : AkoModel> {
     val name: String
