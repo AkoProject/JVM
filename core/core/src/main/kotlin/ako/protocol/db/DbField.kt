@@ -1,8 +1,8 @@
 package ako.protocol.db
 
-import ako.model.protocol.table.ColumnInfo
-import ako.model.protocol.edit.EditInfo
-import ako.model.protocol.search.SearchInfo
+import ako.protocol.edit.EditInfo
+import ako.protocol.search.SearchInfo
+import ako.protocol.table.ColumnInfo
 import com.alibaba.fastjson2.annotation.JSONField
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.lang.reflect.Field
