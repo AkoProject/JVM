@@ -1,6 +1,6 @@
 package ako.access
 
-import ako.model.db.AkoModel
+import ako.model.base.AkoModel
 import smartaccess.annotation.MetadataProvider
 import smartaccess.annotation.ProvideAccessTemple
 import smartaccess.item.Page

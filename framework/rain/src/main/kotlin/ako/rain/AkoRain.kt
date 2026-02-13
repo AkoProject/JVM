@@ -6,7 +6,7 @@ import ako.access.AkoAccess
 import ako.access.SoftDeleteAccess
 import ako.annotation.NoAkoModel
 import ako.`fun`.dbModel
-import ako.model.ModelContext
+import ako.model.base.ModelContext
 import ako.rain.model.AkoRainModelContext
 import org.hibernate.Session
 import rain.api.di.DiContext

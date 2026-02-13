@@ -1,7 +1,7 @@
 package ako.annotation
 
-import ako.model.ButtonDialogInfo
-import ako.model.ButtonEntry
+import ako.protocol.button.ButtonDialogInfo
+import ako.protocol.button.ButtonEntry
 import kotlin.text.ifEmpty
 
 
@@ -60,7 +60,7 @@ annotation class ModelButton(
 ) {
     companion object {
         fun ModelButton.toModelButton() =
-            ButtonEntry(
+            _root_ide_package_.ako.protocol.button.ButtonEntry(
                 name,
                 index,
                 url,
@@ -71,7 +71,7 @@ annotation class ModelButton(
                 component.ifEmpty { null },
                 null,
                 dialog.takeIf { it.component != "" }?.let {
-                    ButtonDialogInfo(
+                    _root_ide_package_.ako.protocol.button.ButtonDialogInfo(
                         it.component,
                         it.title.ifEmpty { null },
                         it.style.ifEmpty { null },
@@ -141,7 +141,7 @@ annotation class OperateButton(
 ) {
     companion object {
         fun OperateButton.toModelButton() =
-            ButtonEntry(
+            _root_ide_package_.ako.protocol.button.ButtonEntry(
                 name,
                 index,
                 url,

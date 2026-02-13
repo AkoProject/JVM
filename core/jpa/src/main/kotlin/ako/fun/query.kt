@@ -1,7 +1,7 @@
 package ako.`fun`
 
-import ako.model.ModelContext
-import ako.model.db.AkoModel
+import ako.model.base.ModelContext
+import ako.model.base.AkoModel
 import ako.model.resp.PageResp
 import jakarta.persistence.Query
 import jakarta.persistence.TypedQuery

@@ -1,7 +1,7 @@
 package ako.rain.`fun`
 
 import ako.access.AkoAccess
-import ako.model.db.AkoModel
+import ako.model.base.AkoModel
 import ako.rain.AkoRain
 
 inline fun <reified T : AkoAccess<*>> findAccess(): T =

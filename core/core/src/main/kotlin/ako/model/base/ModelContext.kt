@@ -1,9 +1,7 @@
-package ako.model
+package ako.model.base
 
-import ako.AkoService.runtime
-import ako.model.db.AkoModel
+import ako.model.protocol.db.DbModel
 import ako.model.resp.PageResp
-
 
 interface ModelContext<T : AkoModel> {
     val name: String
@@ -28,4 +26,5 @@ interface ModelContext<T : AkoModel> {
 
     fun save(data: T)
     fun delete(id: Int)
+
 }

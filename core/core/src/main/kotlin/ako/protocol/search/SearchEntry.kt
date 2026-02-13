@@ -1,4 +1,4 @@
-package ako.model
+package ako.protocol.search
 
 data class SearchEntry(
     val component: String,

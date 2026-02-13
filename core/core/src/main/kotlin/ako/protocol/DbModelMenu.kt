@@ -1,4 +1,4 @@
-package ako.model
+package ako.protocol
 
 data class DbModelMenu(
     var channel: String = "",

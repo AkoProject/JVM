@@ -1,6 +1,6 @@
 package ako.model.resp
 
-import ako.model.DbModel
+import ako.model.protocol.db.DbModel
 
 data class MenuModel(
     val id: String,

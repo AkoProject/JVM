@@ -4,20 +4,20 @@ import ako.AkoService
 import ako.annotation.*
 import ako.annotation.ModelButton.Companion.toModelButton
 import ako.annotation.OperateButton.Companion.toModelButton
-import ako.model.ButtonEditInfo
-import ako.model.DbField
-import ako.model.ButtonEntry
-import ako.model.ColumnInfo
-import ako.model.DbModel
-import ako.model.EditInfo
-import ako.model.EditValidateEntry
-import ako.model.SearchEntry
-import ako.model.SearchInfo
-import ako.model.db.AkoModel
+import ako.protocol.button.ButtonEditInfo
+import ako.protocol.db.DbField
+import ako.protocol.button.ButtonEntry
+import ako.protocol.table.ColumnInfo
+import ako.protocol.db.DbModel
+import ako.protocol.edit.EditInfo
+import ako.protocol.edit.EditValidateEntry
+import ako.protocol.search.SearchEntry
+import ako.protocol.search.SearchInfo
+import ako.model.base.AkoModel
 import java.lang.reflect.Field
 import kotlin.reflect.jvm.kotlinProperty
 
-val <T : AkoModel> Class<T>.dbModel: DbModel<T>
+val <T : AkoModel> Class<T>.dbModel: ako.protocol.db.DbModel<T>
     get() {
         val modelButtons = ArrayList<ButtonEntry>()
 

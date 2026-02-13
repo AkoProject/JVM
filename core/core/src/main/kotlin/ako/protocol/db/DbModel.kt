@@ -1,11 +1,11 @@
-package ako.model
+package ako.protocol.db
 
 import ako.annotation.EnumMapping
 import ako.annotation.Mapping
 import ako.annotation.NoAkoField
 import ako.`fun`.*
-import ako.model.db.AkoModel
-import ako.model.resp.MenuModel
+import ako.model.protocol.button.ButtonEntry
+import ako.model.base.AkoModel
 import com.alibaba.fastjson2.annotation.JSONField
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.lang.reflect.Field
@@ -42,7 +42,7 @@ data class DbModel<T : AkoModel>(
     val mappings = HashMap<String, MappingEntry>()
 
     val fields: List<DbField> = ArrayList<DbField>().apply {
-        add(type.allField.find { it.name == "id" }!!.let { it.dbField.apply { checkField(it) } })
+        java.util.ArrayList.add(type.allField.find { it.name == "id" }!!.let { it.dbField.apply { checkField(it) } })
         type.allField
             .asSequence()
             .filter { it.name != "id" }

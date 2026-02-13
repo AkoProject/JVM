@@ -1,6 +1,6 @@
 package ako.annotation
 
-import ako.model.db.AkoModel
+import ako.model.base.AkoModel
 import kotlin.reflect.KClass
 
 /*** 上传内容字段

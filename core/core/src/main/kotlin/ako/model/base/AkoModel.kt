@@ -1,4 +1,4 @@
-package ako.model.db
+package ako.model.base
 
 interface AkoModel {
 

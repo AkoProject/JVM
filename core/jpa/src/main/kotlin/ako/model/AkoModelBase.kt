@@ -4,7 +4,7 @@ import ako.annotation.DbName
 import ako.annotation.EditIgnore
 import ako.annotation.NoAkoField
 import ako.annotation.ValueType
-import ako.model.db.AkoModel
+import ako.model.base.AkoModel
 import com.alibaba.fastjson2.annotation.JSONField
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column

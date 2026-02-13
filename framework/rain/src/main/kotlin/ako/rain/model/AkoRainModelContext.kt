@@ -1,9 +1,9 @@
 package ako.rain.model
 
 import ako.access.AkoAccess
-import ako.model.DbModel
-import ako.model.ModelContext
-import ako.model.db.AkoModel
+import ako.model.protocol.db.DbModel
+import ako.model.base.ModelContext
+import ako.model.base.AkoModel
 import ako.model.resp.PageResp
 import smartaccess.item.Page
 

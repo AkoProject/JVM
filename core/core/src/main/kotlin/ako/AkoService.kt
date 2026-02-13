@@ -2,8 +2,8 @@ package ako
 
 import ako.annotation.MenuGroup
 import ako.`fun`.webError
-import ako.model.DbModelMenu
-import ako.model.ModelContext
+import ako.protocol.DbModelMenu
+import ako.model.base.ModelContext
 
 object AkoService {
 
@@ -14,14 +14,14 @@ object AkoService {
         this.runtime = runtime
     }
 
-    val dbMenus = HashMap<String, DbModelMenu>()
+    val dbMenus = HashMap<String, ako.protocol.DbModelMenu>()
 
-    fun findMenu(annotation: MenuGroup): DbModelMenu {
+    fun findMenu(annotation: MenuGroup): ako.protocol.DbModelMenu {
         val id = annotation.id
         if (id == "") error("菜单组的 id 不能为空！")
 
         val menu = dbMenus.getOrPut(id) {
-            DbModelMenu(
+            _root_ide_package_.ako.protocol.DbModelMenu(
                 channel = "",
                 identifier = id,
                 iconNode = "default-entity-icon-node"

@@ -1,6 +1,6 @@
 package ako
 
-import ako.model.ModelContext
+import ako.model.base.ModelContext
 
 interface AkoRuntime {
 

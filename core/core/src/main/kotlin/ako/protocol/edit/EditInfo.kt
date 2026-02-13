@@ -1,4 +1,4 @@
-package ako.model
+package ako.protocol.edit
 
 data class EditInfo(
     val component: String,

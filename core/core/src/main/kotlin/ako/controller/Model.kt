@@ -1,8 +1,8 @@
 package ako.controller
 
 import ako.AkoService
-import ako.model.ModelContext
-import ako.model.db.AkoModel
+import ako.model.base.ModelContext
+import ako.model.base.AkoModel
 import ako.model.req.ModelPageReq
 import ako.model.resp.ModelPageResp
 

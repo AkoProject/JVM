@@ -1,4 +1,4 @@
-package ako.model
+package ako.protocol.button
 
 data class ButtonDialogInfo(
     val component: String,

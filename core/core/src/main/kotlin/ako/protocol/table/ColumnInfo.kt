@@ -1,4 +1,4 @@
-package ako.model
+package ako.protocol.table
 
 data class ColumnInfo(
     val component: String,
