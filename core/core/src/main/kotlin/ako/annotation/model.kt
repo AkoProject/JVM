@@ -137,6 +137,7 @@ annotation class PanelField(
     val id: String,
     val nullable: Boolean = false,
     val name: DbName = DbName(""),
+    val description: Description = Description(""),
     val valueType: ValueType = ValueType(ValueType.Type.TEXT),
     val enum: DbEnum = DbEnum(),
     val enumEnum: EnumEnum = EnumEnum(""),
@@ -148,6 +149,7 @@ annotation class PanelField(
         fun PanelField.toCustomEditField(model: String): CustomEditField {
             val annotations = ArrayList<Annotation>()
             if (name.value.isNotEmpty()) annotations.add(name)
+            if (description.value.isNotEmpty()) annotations.add(description)
             if (valueType.value != ValueType.Type.TEXT) annotations.add(valueType)
             if (enum.value.isNotEmpty()) annotations.add(enum)
             if (enumEnum.value.isNotEmpty()) annotations.add(enumEnum)

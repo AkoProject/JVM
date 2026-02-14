@@ -5,6 +5,7 @@ import ako.annotation.ButtonPanel
 import ako.annotation.DbEnum
 import ako.annotation.DbFlag
 import ako.annotation.DbName
+import ako.annotation.Description
 import ako.annotation.Mapping
 import ako.annotation.ModelButton
 import ako.annotation.PanelField
@@ -27,6 +28,7 @@ import jakarta.persistence.Table
             PanelField(
                 "mode",
                 name = DbName("操作模式"),
+                description = Description("增加为在当前值上加上设定值（为负时为减少），设定是将当前值设置为设定值。"),
                 flag = DbFlag("true:增加", "false:设定")
             ),
             PanelField(
