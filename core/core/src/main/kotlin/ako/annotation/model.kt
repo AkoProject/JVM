@@ -135,7 +135,8 @@ annotation class ButtonPanel(
 
 annotation class PanelField(
     val id: String,
-    val nullable: Boolean = false,
+    val nullable: Boolean = true,
+    val allowEmpty: Boolean = false,
     val name: DbName = DbName(""),
     val description: Description = Description(""),
     val valueType: ValueType = ValueType(ValueType.Type.TEXT),
@@ -144,6 +145,8 @@ annotation class PanelField(
     val flag: DbFlag = DbFlag(),
     val mapping: Mapping = Mapping(AkoModel::class, display = ""),
     val enumMapping: EnumMapping = EnumMapping(""),
+    // 该参数仅作为默认实例使用，如有需设置允许为 null，则需要将 emptyAble 设置为 true。
+    val empty: AllowEmpty = AllowEmpty()
 ) {
     companion object {
         fun PanelField.toCustomEditField(model: String): CustomEditField {
@@ -156,6 +159,7 @@ annotation class PanelField(
             if (flag.value.isNotEmpty()) annotations.add(flag)
             if (mapping.value != AkoModel::class) annotations.add(mapping)
             if (enumMapping.field.isNotEmpty()) annotations.add(enumMapping)
+            if (allowEmpty) annotations.add(empty)
             return AkoAnnotationContainer(annotations.toTypedArray())
                 .readFieldInfo(model, id, String::class.java, nullable)
                 .let {

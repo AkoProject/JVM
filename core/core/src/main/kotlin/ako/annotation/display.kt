@@ -58,6 +58,10 @@ annotation class Disabled(val value: String = "")
 @Target(AnnotationTarget.FIELD)
 annotation class Required(val value: String = "")
 
+// 允许空值字段，前端会在编辑组件中使这个字段允许空值
+@Target(AnnotationTarget.FIELD)
+annotation class AllowEmpty
+
 /** 范围限制字段，前端会在编辑组件中使这个字段值在指定范围内
  * @param min 最小值，默认为 -1，表示不限制
  * @param max 最大值，默认为 -1，表示不限制

@@ -216,7 +216,19 @@ fun AnnotatedElement.readFieldInfo(model: String, id: String, fieldType: Class<*
     fun editInfo(): EditInfo? {
         if (editIgnore) return null
         val validates = ArrayList<EditValidateEntry>()
-        var required = false
+        var required = nullable
+        val allowEmpty = hasAnnotation<AllowEmpty>()
+        run {
+            var message: String? = null
+            annotation<Required> {
+                required = true
+                message = value
+            }
+            if (message == null && !nullable) message = "$name 不能为空"
+
+            if (message != null && !allowEmpty)
+                validates.add(EditValidateEntry(require = true, message = message))
+        }
         annotation<Required> {
             required = true
             validates.add(EditValidateEntry(require = true, message = value))
@@ -264,6 +276,7 @@ fun AnnotatedElement.readFieldInfo(model: String, id: String, fieldType: Class<*
         return EditInfo(
             annotation<FieldNode>()?.editColumnNode ?: "default-entity-edit-column-node",
             required,
+            allowEmpty,
             !hasAnnotation<Disabled>(),
             name,
             validates

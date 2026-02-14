@@ -28,12 +28,14 @@ import jakarta.persistence.Table
             PanelField(
                 "mode",
                 name = DbName("操作模式"),
+                nullable = false,
                 description = Description("增加为在当前值上加上设定值（为负时为减少），设定是将当前值设置为设定值。"),
                 flag = DbFlag("true:增加", "false:设定")
             ),
             PanelField(
                 "point",
                 name = DbName("操作值"),
+                nullable = false,
             ),
         ]
     )
