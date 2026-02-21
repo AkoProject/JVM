@@ -16,19 +16,50 @@ annotation class ModelNode(
     val iconNode: String = "default-entity-icon-node",
 )
 
-/*** 前端映射字段配置
- * @param searchColumnNode 搜索列组件
- * @param tableColumnNode 列表列组件
- * @param editColumnNode 编辑列组件
+///*** 前端映射字段配置
+// * @param searchColumnNode 搜索列组件
+// * @param tableColumnNode 列表列组件
+// * @param editColumnNode 编辑列组件
+// *
+// * 如果指定了一个值，前端会通过这个值在 Vue 内按名称寻找组件，请确认组件名称正确，且已经注册到 Vue App。
+// */
+//@Target(AnnotationTarget.FIELD)
+//annotation class FieldNode(
+//    val searchColumnNode : String = "default-entity-search-property-node",
+//    val tableColumnNode: String = "default-entity-table-column-node",
+//    val editColumnNode: String = "default-entity-edit-column-node",
+//)
+
+/** 搜索时展示 field 的组件名称
+ * @param value 组件名称
  *
- * 如果指定了一个值，前端会通过这个值在 Vue 内按名称寻找组件，请确认组件名称正确，且已经注册到 Vue App。
+ * 前端会通过这个值在 Vue 内按名称寻找组件，请确认组件名称正确，且已经注册到 Vue App。
  */
-@Target(AnnotationTarget.FIELD)
-annotation class FieldNode(
-    val searchColumnNode : String = "default-entity-search-property-node",
-    val tableColumnNode: String = "default-entity-table-column-node",
-    val editColumnNode: String = "default-entity-edit-column-node",
-)
+annotation class SearchPropertyNode(val value: String)
+/** 搜索时 field 搜索值组件的名称
+ * @param value 组件名称
+ *
+ * 前端会通过这个值在 Vue 内按名称寻找组件，请确认组件名称正确，且已经注册到 Vue App。
+ */
+annotation class SearchInputNode(val value: String)
+/** 列表时展示 field 的组件名称
+ * @param value 组件名称
+ *
+ * 前端会通过这个值在 Vue 内按名称寻找组件，请确认组件名称正确，且已经注册到 Vue App。
+ */
+annotation class EditPropertyNode(val value: String)
+/** 编辑时 field 输入组件的名称
+ * @param value 组件名称
+ *
+ * 前端会通过这个值在 Vue 内按名称寻找组件，请确认组件名称正确，且已经注册到 Vue App。
+ */
+annotation class EditInputNode(val value: String)
+/** 列表时展示 field 的组件名称
+ * @param value 组件名称
+ *
+ * 前端会通过这个值在 Vue 内按名称寻找组件，请确认组件名称正确，且已经注册到 Vue App。
+ */
+annotation class TableColumnNode(val value: String)
 
 // 标记该字段不在查询组件中展示
 @Target(AnnotationTarget.FIELD)

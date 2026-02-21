@@ -15,9 +15,26 @@ import ako.protocol.search.SearchEntry
 import ako.protocol.search.SearchInfo
 import ako.model.base.AkoModel
 import ako.protocol.db.CustomDbField
+import ako.protocol.type.AkoTypeProvider
 import java.lang.reflect.AnnotatedElement
 import java.lang.reflect.Field
 import kotlin.reflect.jvm.kotlinProperty
+
+object AkoDefaultNode {
+
+    var view = "default-entity-page-node"
+    var icon = "default-entity-icon-node"
+
+    var entitySearch = "default-entity-search-node"
+    var entityTable = "default-entity-table-node"
+    var entityEdit = "default-entity-edit-node"
+
+    var fieldSearchInput = "default-entity-search-input-node"
+    var fieldSearchProperty = "default-entity-search-property-node"
+    var fieldEditInput = "default-entity-edit-input-node"
+    var fieldEditProperty = "default-entity-edit-property-node"
+    var fieldTableColumn = "default-entity-table-column-node"
+}
 
 val <T : AkoModel> Class<T>.dbModel: DbModel<T>
     get() {
@@ -96,122 +113,73 @@ val <T : AkoModel> Class<T>.dbModel: DbModel<T>
             null,
             annotation<DbName>()?.index ?: 100,
             false,
-            annotation<ModelNode>()?.pageNode ?: "default-entity-page-node",
-            annotation<ModelNode>()?.searchNode ?: "default-entity-search-node",
-            annotation<ModelNode>()?.tableNode ?: "default-entity-table-node",
-            annotation<ModelNode>()?.editNode ?: "default-entity-edit-node",
-            annotation<ModelNode>()?.iconNode ?: "default-entity-icon-node",
+            annotation<ModelNode>()?.pageNode ?: AkoDefaultNode.view,
+            annotation<ModelNode>()?.searchNode ?: AkoDefaultNode.entitySearch,
+            annotation<ModelNode>()?.tableNode ?: AkoDefaultNode.entityTable,
+            annotation<ModelNode>()?.editNode ?: AkoDefaultNode.entityEdit,
+            annotation<ModelNode>()?.iconNode ?: AkoDefaultNode.icon,
             modelButtons,
             operateButtons
         )
     }
 
-fun AnnotatedElement.readFieldInfo(model: String, id: String, fieldType: Class<*>, nullable: Boolean): CustomDbField {
+fun AnnotatedElement.readFieldInfo(
+    model: String,
+    id: String,
+    fieldType: Class<*>,
+    nullable: Boolean,
+    modelClass: Class<*>? = null,
+    fieldInstance: Field? = null,
+): CustomDbField {
     val name = annotation<DbName>()?.value ?: id
 
-    var type = 0
-    var subtype = 0
+    val searchIgnore = hasAnnotation<SearchIgnore>()
+    val tableIgnore = hasAnnotation<TableIgnore>()
+    val editIgnore = hasAnnotation<EditIgnore>()
 
-    var searchIgnore = hasAnnotation<SearchIgnore>()
-    var tableIgnore = hasAnnotation<TableIgnore>()
-    var editIgnore = hasAnnotation<EditIgnore>()
+    var type = "ako:text"
+    var option: Any?
 
-    var content: String? = null
-    var enum: List<String>? = null
-    var mappingEnum: List<String>? = null
+    var hitAnnotation: Annotation? = null
+    var typeAnnotation: AkoType? = null
+    var typeProvider: AkoTypeProvider<Annotation, Any, Any>? = null
 
-    annotation<Upload> {
-        searchIgnore = true
 
-        content = "$url|$prefix"
+    fun hitAnnotation(hit: Annotation?, type: AkoType) {
+        if (typeAnnotation != null) error("字段 $model.$id 上存在多个 AkoType 注解！提供的 AkoType 注解必须唯一！")
+        hitAnnotation = hit
+        typeAnnotation = type
 
-        type = ValueType.Type.UPLOAD.type
-        subtype = when (this.type) {
-            "image" -> ValueType.Type.UPLOAD_IMAGE.subtype
-            else -> ValueType.Type.UPLOAD.subtype
-        }
+        typeProvider =
+            AkoService.runtime.getTypeProvider(typeAnnotation.provider.java) as? AkoTypeProvider<Annotation, Any, Any>?
+                ?: error("字段 $model.$id 上的 AkoType 注解 ${typeAnnotation.provider.java.name} 无法加载对应的实例！")
     }
+
+    declaredAnnotations.forEach {
+        if (it !is AkoType) it.annotationAnnotation<AkoType>()
+            .forEach { at -> hitAnnotation(it, at) }
+        else hitAnnotation(null, it)
+    }
+
+    option = typeProvider?.readField(
+        model,
+        id,
+        fieldType,
+        nullable,
+        modelClass,
+        fieldInstance,
+        hitAnnotation,
+        typeAnnotation
+    )
+    type = typeProvider?.id ?: hitAnnotation?.annotationAnnotation<Identifier>()?.firstOrNull()?.value ?: type
 
     val searchWidth = annotation<SearchColumnWidth>()?.value ?: "200px"
     val tableWidth = annotation<TableColumnWidth>()?.value ?: 200
 
-
-    annotation<ValueType> {
-        type = value.type
-        subtype = value.subtype
-    }
-
-    var searchEntries: MutableList<SearchEntry> = ArrayList()
-
-    when (type) {
-        ValueType.Type.DATE.type -> {
-            searchEntries.add(
-                SearchEntry(
-                    "default-entity-search-column-node",
-                    "gte",
-                    "开始时间",
-                    searchWidth
-                )
-            )
-            searchEntries.add(
-                SearchEntry(
-                    "default-entity-search-column-node",
-                    "lte",
-                    "结束时间",
-                    searchWidth
-                )
-            )
-        }
-
-        else -> searchEntries.add(
-            SearchEntry(
-                "default-entity-search-column-node",
-                "eq",
-                name,
-                searchWidth
-            )
-        )
-    }
-
-    annotation<SearchType> {
-        searchEntries = value.map {
-            SearchEntry(
-                "default-entity-search-column-node",
-                it.opt,
-                name,
-                searchWidth
-            )
-        }.toMutableList()
-    }
-
-    annotation<Mapping> {
-        type = ValueType.Type.MAPPING.type
-        subtype = ValueType.Type.MAPPING.subtype
-
-        content = "${value.java.simpleName}|$field|$display"
-    }
-    annotation<EnumMapping> {
-        type = ValueType.Type.ENUM_MAPPING.type
-        subtype = ValueType.Type.ENUM_MAPPING.subtype
-
-        content = field
-        enum = mappings.mapIndexed { index, mapping ->
-            val i = if (mapping.index < 0) index else mapping.index
-            "$i:${mapping.value.java.simpleName}|${mapping.field}|${mapping.display}"
-        }
-    }
-    annotation<DbEnum> {
-        type = ValueType.Type.ENUM.type
-        subtype = ValueType.Type.ENUM.subtype
-
-        enum = value.toList()
-    }
-    annotation<DbFlag> {
-        type = ValueType.Type.ENUM.type
-        subtype = ValueType.Type.ENUM.subtype
-
-        enum = value.toList()
-    }
+    val searchEntries = annotation<SearchType>()?.value
+        ?.map { SearchEntry(AkoDefaultNode.fieldSearchInput, it.opt, name, searchWidth) }
+        ?: typeProvider?.defaultSearch(model, id, fieldType, searchWidth, option)
+        ?: listOf(SearchEntry(AkoDefaultNode.fieldSearchInput, "eq", name, searchWidth))
 
     fun editInfo(): EditInfo? {
         if (editIgnore) return null
@@ -274,7 +242,8 @@ fun AnnotatedElement.readFieldInfo(model: String, id: String, fieldType: Class<*
             )
         }
         return EditInfo(
-            annotation<FieldNode>()?.editColumnNode ?: "default-entity-edit-column-node",
+            annotation<EditPropertyNode>()?.value ?: AkoDefaultNode.fieldEditProperty,
+            annotation<EditInputNode>()?.value ?: AkoDefaultNode.fieldEditInput,
             required,
             allowEmpty,
             !hasAnnotation<Disabled>(),
@@ -287,22 +256,98 @@ fun AnnotatedElement.readFieldInfo(model: String, id: String, fieldType: Class<*
         id,
         name,
         annotation<Description>()?.value,
+        typeProvider,
         type,
-        subtype,
-        content,
-        enum,
-
+        option,
         if (searchIgnore) null else SearchInfo(
-            annotation<FieldNode>()?.searchColumnNode ?: "default-entity-search-property-node",
+            annotation<SearchPropertyNode>()?.value ?: AkoDefaultNode.fieldSearchProperty,
             searchEntries
         ),
         editInfo(),
         if (tableIgnore) null else ColumnInfo(
-            annotation<FieldNode>()?.tableColumnNode ?: "default-entity-table-column-node",
+            annotation<TableColumnNode>()?.value ?: AkoDefaultNode.fieldTableColumn,
             tableWidth,
             annotation<ColumnIndex>()?.value,
         ),
     )
+
+//    annotation<Upload> {
+//        searchIgnore = true
+//
+//        content = "$url|$prefix"
+//
+//        type = ValueType.Type.UPLOAD.type
+//        subtype = when (this.type) {
+//            "image" -> ValueType.Type.UPLOAD_IMAGE.subtype
+//            else -> ValueType.Type.UPLOAD.subtype
+//        }
+//    }
+//
+//    annotation<ValueType> {
+//        type = value.type
+//        subtype = value.subtype
+//    }
+//
+//    when (type) {
+//        ValueType.Type.DATE.type -> {
+//            searchEntries.add(
+//                SearchEntry(
+//                    "default-entity-search-column-node",
+//                    "gte",
+//                    "开始时间",
+//                    searchWidth
+//                )
+//            )
+//            searchEntries.add(
+//                SearchEntry(
+//                    "default-entity-search-column-node",
+//                    "lte",
+//                    "结束时间",
+//                    searchWidth
+//                )
+//            )
+//        }
+//
+//        else -> searchEntries.add(
+//            SearchEntry(
+//                "default-entity-search-column-node",
+//                "eq",
+//                name,
+//                searchWidth
+//            )
+//        )
+//    }
+//
+//    annotation<Mapping> {
+//        type = ValueType.Type.MAPPING.type
+//        subtype = ValueType.Type.MAPPING.subtype
+//
+//        content = "${value.java.simpleName}|$field|$display"
+//    }
+//    annotation<EnumMapping> {
+//        type = ValueType.Type.ENUM_MAPPING.type
+//        subtype = ValueType.Type.ENUM_MAPPING.subtype
+//
+//        content = field
+//        enum = mappings.mapIndexed { index, mapping ->
+//            val i = if (mapping.index < 0) index else mapping.index
+//            "$i:${mapping.value.java.simpleName}|${mapping.field}|${mapping.display}"
+//        }
+//    }
+//    annotation<DbEnum> {
+//        type = ValueType.Type.ENUM.type
+//        subtype = ValueType.Type.ENUM.subtype
+//
+//        enum = value.toList()
+//    }
+//    annotation<DbFlag> {
+//        type = ValueType.Type.ENUM.type
+//        subtype = ValueType.Type.ENUM.subtype
+//
+//        enum = value.toList()
+//    }
+
+
 }
 
 val Field.dbField: DbField
@@ -323,9 +368,8 @@ val Field.dbField: DbField
             it.column,
 
             it.type,
-            it.subtype,
-            it.content,
-            it.enum
+            it.options,
+            it.provider
         )
     }
 

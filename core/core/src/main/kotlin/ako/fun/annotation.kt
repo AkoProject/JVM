@@ -20,3 +20,11 @@ class AkoAnnotationContainer(private val annotations: Array<out Annotation>) : A
 
     override fun getDeclaredAnnotations(): Array<out Annotation> = annotations
 }
+
+inline fun <reified T : Annotation> Annotation.annotationAnnotation(): List<T> {
+    val list = ArrayList<T>()
+    this::class.java.interfaces.forEach {
+        list.addAll(it.getAnnotationsByType(T::class.java))
+    }
+    return list
+}

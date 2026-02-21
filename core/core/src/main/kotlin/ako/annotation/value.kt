@@ -1,7 +1,15 @@
 package ako.annotation
 
 import ako.model.base.AkoModel
+import ako.protocol.type.AkoTypeProvider
 import kotlin.reflect.KClass
+
+/*** 自定义值类型提供者
+ * @param provider 提供者类，必须实现 AkoTypeProvider 接口。
+ */
+annotation class AkoType(val provider: KClass<out AkoTypeProvider<*, *, *>>)
+
+annotation class Identifier(val value: String)
 
 /*** 上传内容字段
  * @param url 上传地址
@@ -41,36 +49,36 @@ annotation class SearchType(vararg val value: Type) {
  */
 @Target(AnnotationTarget.FIELD)
 annotation class ValueType(val value: Type) {
-    enum class Type(val type: Int, val subtype: Int) {
+    enum class Type(val type: String) {
         // 文本类型
-        TEXT(0, 0),
+        TEXT("ako:text"),
 
         // 文本域类型
-        TEXTAREA(1, 0),
+        TEXTAREA("ako:textarea"),
 
         // 日期类型，日期与时间类型默认会创建一个前后关联的查询。
-        DATE(40, 0),
+        DATE("ako:timestamp:date"),
 
         // 时间类型，日期与时间类型默认会创建一个前后关联的查询。
-        TIME(40, 1),
+        TIME("ako:timestamp:time"),
 
         // 日期时间类型，日期与时间类型默认会创建一个前后关联的查询。
-        DATETIME(40, 2),
+        DATETIME("ako:timestamp:datetime"),
 
         // 关联映射类型，请勿手动指定该类型
-        MAPPING(50, 0),
+        MAPPING("ako:mapping:standard"),
 
         // 枚举关联类型，请勿手动指定该类型
-        ENUM_MAPPING(50, 1),
+        ENUM_MAPPING("ako:mapping:enum"),
 
         // 枚举类型，请勿手动指定该类型
-        ENUM(100, 0),
+        ENUM("ako:enum"),
 
         // 上传文件类型
-        UPLOAD(120, 0),
+        UPLOAD("ako:file:any"),
 
         // 上传图片类型
-        UPLOAD_IMAGE(120, 1),
+        UPLOAD_IMAGE("ako:file:image"),
     }
 }
 

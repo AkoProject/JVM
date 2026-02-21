@@ -168,9 +168,7 @@ annotation class PanelField(
                         it.name,
                         it.description,
                         it.type,
-                        it.subtype,
-                        it.content,
-                        it.enum,
+                        it.options,
                         it.edit,
                     )
                 }

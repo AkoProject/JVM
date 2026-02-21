@@ -7,6 +7,7 @@ import ako.protocol.search.SearchField
 import ako.protocol.search.SearchInfo
 import ako.protocol.table.ColumnInfo
 import ako.protocol.table.TableField
+import ako.protocol.type.AkoTypeProvider
 import com.alibaba.fastjson2.annotation.JSONField
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.lang.reflect.Field
@@ -24,11 +25,11 @@ data class DbField(
     override val edit: EditInfo?,
     override val column: ColumnInfo?,
 
-    override val type: Int,
-    override val subtype: Int,
-
-    override val content: String?,
-    override val enum: List<String>?,
+    override val type: String,
+    override val options: Any?,
+    @field:JsonIgnore
+    @field:JSONField(serialize = false)
+    val provider: AkoTypeProvider<*, *, *>?,
 ) : BaseField, SearchField, EditField, TableField {
     operator fun get(instance: Any): Any? = field.apply { isAccessible = true }.get(instance)
 

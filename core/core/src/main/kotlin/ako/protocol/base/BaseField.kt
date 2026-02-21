@@ -5,9 +5,6 @@ interface BaseField {
     val name: String
     val description: String?
 
-    val type: Int
-    val subtype: Int
-
-    val content: String?
-    val enum: List<String>?
+    val type: String
+    val options: Any?
 }

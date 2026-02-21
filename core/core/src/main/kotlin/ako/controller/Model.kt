@@ -5,6 +5,7 @@ import ako.model.base.ModelContext
 import ako.model.base.AkoModel
 import ako.model.req.ModelPageReq
 import ako.model.resp.ModelPageResp
+import ako.protocol.type.AkoTypeProvider.Companion.cast2Any
 
 object Model {
 
@@ -12,14 +13,23 @@ object Model {
         val modelContext = AkoService.modelOf(model)
 
         val all = modelContext.wherePage(data.params, data.sort, data.page, data.size)
-        val mappings = HashMap<String, MutableList<Any>>()
-        modelContext.model.mappings.forEach { (name, mapping) ->
-            AkoService.modelOf(name)
-                .whereList(mapOf("${mapping.fieldName}_in" to all.list.mapNotNull { e -> mapping.field(e) }))
-                .let { mappings.getOrPut(name) { ArrayList() }.addAll(it) }
+//        val mappings = HashMap<String, MutableList<Any>>()
+//        modelContext.model.mappings.forEach { (name, mapping) ->
+//            AkoService.modelOf(name)
+//                .whereList(mapOf("${mapping.fieldName}_in" to all.list.mapNotNull { e -> mapping.field(e) }))
+//                .let { mappings.getOrPut(name) { ArrayList() }.addAll(it) }
+//        }
+
+        val information = HashMap<String, Any?>()
+        modelContext.model.fields.forEach { field ->
+            field.provider?.cast2Any()
+                ?.let {
+                    information[it.id] =
+                        it.searchInformation(modelContext.model, field, field.options, information[it.id], all.list)
+                }
         }
 
-        return ModelPageResp(all.total, all.list, mappings)
+        return ModelPageResp(all.total, all.list, information)
     }
 
     fun save(model: String, data: AkoModel) {

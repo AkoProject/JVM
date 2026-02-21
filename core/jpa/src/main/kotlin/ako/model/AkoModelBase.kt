@@ -4,6 +4,7 @@ import ako.annotation.DbName
 import ako.annotation.EditIgnore
 import ako.annotation.NoAkoField
 import ako.annotation.ValueType
+import ako.annotation.types.Datetime
 import ako.model.base.AkoModel
 import com.alibaba.fastjson2.annotation.JSONField
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -20,7 +21,7 @@ abstract class AkoModelBase : AkoModel {
 
     @DbName("创建时间")
     @Column(name = "create_time", updatable = false)
-    @ValueType(ValueType.Type.DATETIME)
+    @Datetime
     @EditIgnore
     open var createTime: Long = 0
 

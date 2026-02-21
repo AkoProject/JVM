@@ -7,6 +7,7 @@ import ako.access.SoftDeleteAccess
 import ako.annotation.NoAkoModel
 import ako.`fun`.dbModel
 import ako.model.base.ModelContext
+import ako.protocol.type.AkoTypeProvider
 import ako.rain.model.AkoRainModelContext
 import org.hibernate.Session
 import rain.api.di.DiContext
@@ -64,6 +65,9 @@ class AkoRain(
 
     override val modelMap: Map<String, ModelContext<*>>
         get() = _modelMap
+
+    override fun <T : AkoTypeProvider<*, *, *>> getTypeProvider(providerType: Class<T>): T? =
+        context.getBean(providerType)
 
     inline fun <R> transaction(crossinline block: () -> R): R {
         val em = db.getEntityManager("default")
