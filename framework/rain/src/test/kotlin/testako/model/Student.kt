@@ -2,13 +2,13 @@ package testako.model
 
 import ako.access.SoftDeleteAccess
 import ako.annotation.ButtonPanel
-import ako.annotation.DbEnum
 import ako.annotation.DbFlag
 import ako.annotation.DbName
 import ako.annotation.Description
 import ako.annotation.Mapping
 import ako.annotation.ModelButton
 import ako.annotation.PanelField
+import ako.annotation.types.DbEnum
 import ako.`fun`.webError
 import ako.model.CompleteModel
 import ako.rain.`fun`.findAccess
