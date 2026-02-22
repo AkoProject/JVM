@@ -2,12 +2,12 @@ package testako.model
 
 import ako.access.SoftDeleteAccess
 import ako.annotation.ButtonPanel
-import ako.annotation.DbFlag
 import ako.annotation.DbName
 import ako.annotation.Description
 import ako.annotation.types.Mapping
 import ako.annotation.ModelButton
 import ako.annotation.PanelField
+import ako.annotation.types.DbEnum
 import ako.`fun`.webError
 import ako.model.CompleteModel
 import ako.rain.`fun`.findAccess
@@ -29,7 +29,7 @@ import jakarta.persistence.Table
                 name = DbName("操作模式"),
                 nullable = false,
                 description = Description("增加为在当前值上加上设定值（为负时为减少），设定是将当前值设置为设定值。"),
-                flag = DbFlag("true:增加", "false:设定")
+                enum = DbEnum("增加", "设定")
             ),
             PanelField(
                 "point",

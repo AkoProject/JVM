@@ -3,7 +3,6 @@ package ako.model
 import ako.annotation.DbName
 import ako.annotation.EditIgnore
 import ako.annotation.NoAkoField
-import ako.annotation.ValueType
 import ako.annotation.types.Datetime
 import ako.model.base.AkoModel
 import com.alibaba.fastjson2.annotation.JSONField

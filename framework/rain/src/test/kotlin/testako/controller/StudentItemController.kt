@@ -13,10 +13,10 @@ import testako.model.StudentPoint
 class StudentItemController {
 
     @PatchAction("point")
-    fun point(studentId: Int, point: Int, mode: Boolean) = transaction {
+    fun point(studentId: Int, point: Int, mode: Int) = transaction {
         val student = Student.get(studentId) ?: Student.notExist()
         run { StudentPoint.findByStudent(studentId) ?: StudentPoint(student.group, studentId, 0) }
-            .apply { if (mode) this.point += point else this.point = point }
+            .apply { if (mode == 0) this.point += point else this.point = point }
             .save()
     }
 

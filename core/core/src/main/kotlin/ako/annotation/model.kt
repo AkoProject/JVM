@@ -2,6 +2,10 @@ package ako.annotation
 
 import ako.annotation.ButtonPanel.Companion.toButtonPanelInfo
 import ako.annotation.PanelField.Companion.toCustomEditField
+import ako.annotation.types.CascadeEnum
+import ako.annotation.types.CascadeMapping
+import ako.annotation.types.DbEnum
+import ako.annotation.types.Mapping
 import ako.`fun`.AkoAnnotationContainer
 import ako.`fun`.notEmptyOrNull
 import ako.`fun`.readFieldInfo
@@ -139,12 +143,10 @@ annotation class PanelField(
     val allowEmpty: Boolean = false,
     val name: DbName = DbName(""),
     val description: Description = Description(""),
-    val valueType: ValueType = ValueType(ValueType.Type.TEXT),
     val enum: DbEnum = DbEnum(),
-    val enumEnum: EnumEnum = EnumEnum(""),
-    val flag: DbFlag = DbFlag(),
+    val cascadeEnum: CascadeEnum = CascadeEnum(""),
     val mapping: Mapping = Mapping(AkoModel::class, display = ""),
-    val enumMapping: EnumMapping = EnumMapping(""),
+    val cascadeMapping: CascadeMapping = CascadeMapping(""),
     // 该参数仅作为默认实例使用，如有需设置允许为 null，则需要将 emptyAble 设置为 true。
     val empty: AllowEmpty = AllowEmpty()
 ) {
@@ -153,12 +155,10 @@ annotation class PanelField(
             val annotations = ArrayList<Annotation>()
             if (name.value.isNotEmpty()) annotations.add(name)
             if (description.value.isNotEmpty()) annotations.add(description)
-            if (valueType.value != ValueType.Type.TEXT) annotations.add(valueType)
             if (enum.value.isNotEmpty()) annotations.add(enum)
-            if (enumEnum.value.isNotEmpty()) annotations.add(enumEnum)
-            if (flag.value.isNotEmpty()) annotations.add(flag)
+            if (cascadeEnum.value.isNotEmpty()) annotations.add(cascadeEnum)
             if (mapping.value != AkoModel::class) annotations.add(mapping)
-            if (enumMapping.field.isNotEmpty()) annotations.add(enumMapping)
+            if (cascadeMapping.field.isNotEmpty()) annotations.add(cascadeMapping)
             if (allowEmpty) annotations.add(empty)
             return AkoAnnotationContainer(annotations.toTypedArray())
                 .readFieldInfo(model, id, String::class.java, nullable)

@@ -1,15 +1,11 @@
 package ako.protocol.db
 
-import ako.annotation.EnumMapping
-import ako.annotation.Mapping
 import ako.annotation.NoAkoField
 import ako.`fun`.*
 import ako.model.base.AkoModel
 import ako.protocol.button.ButtonEntry
 import com.alibaba.fastjson2.annotation.JSONField
 import com.fasterxml.jackson.annotation.JsonIgnore
-import java.lang.reflect.Field
-
 
 data class DbModel<T : AkoModel>(
     @field:JsonIgnore
@@ -42,42 +38,13 @@ data class DbModel<T : AkoModel>(
     val mappings = HashMap<String, MappingEntry>()
 
     val fields: List<DbField> = ArrayList<DbField>().apply {
-        add(type.allField.find { it.name == "id" }!!.let { it.dbField.apply { checkField(it) } })
+        add(type.allField.find { it.name == "id" }!!.dbField)
         type.allField
             .asSequence()
             .filter { it.name != "id" }
             .filter { !it.isStatic }
             .filter { !it.hasAnnotation<NoAkoField>() }
-            .forEach { field ->
-                field.dbField.apply {
-                    checkField(field)
-                    add(this)
-                }
-            }
+            .forEach { add(it.dbField) }
     }
 
-    fun DbField.checkField(field: Field){
-        field.annotation<Mapping> {
-            mappings[value.java.simpleName] = MappingEntry(value.java.simpleName, value.java, this.field) {
-                field.isAccessible = true
-                field.get(it) as? Int
-            }
-        }
-        field.annotation<EnumMapping> {
-            val mappingField = field.declaringClass.getDeclaredField(this.field)
-            mappings.forEachIndexed { index, mapping ->
-                val i = if (mapping.index < 0) index else mapping.index
-                this@DbModel.mappings[mapping.value.java.simpleName] =
-                    MappingEntry(mapping.value.java.simpleName, mapping.value.java, this.field) {
-                        mappingField.isAccessible = true
-                        val enum = mappingField.get(it) as Int
-                        if (enum != i) null
-                        else {
-                            field.isAccessible = true
-                            field.get(it)
-                        }
-                    }
-            }
-        }
-    }
 }
