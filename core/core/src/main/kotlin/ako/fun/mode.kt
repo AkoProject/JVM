@@ -54,7 +54,7 @@ val <T : AkoModel> Class<T>.dbModel: DbModel<T>
                 ButtonEntry(
                     index = 1,
                     name = "新增",
-                    edit = ButtonEditInfo(),
+                    edit = ButtonEditInfo(data = "({})"),
                     type = "default"
                 )
             )
