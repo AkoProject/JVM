@@ -22,6 +22,8 @@ class AkoRainModelContext<T : AkoModel>(
         ) = AkoRainModelContext(name, model.type, model, access as AkoAccess<T>)
     }
 
+    val convertMap = model.fields.associate { it.id to it::convert }
+
     override fun whereList(
         params: Map<String, Any>?,
         pid: Int?,
@@ -30,11 +32,10 @@ class AkoRainModelContext<T : AkoModel>(
         return if (params == null)
             if (pid != null && pSize != null) access.findAll(Page((pid - 1) * pSize, pSize))
             else access.findAll()
-        else if (pid != null && pSize != null) access.whereQuery(params, Page((pid - 1) * pSize, pSize))
-        else access.whereQuery(params)
+        else if (pid != null && pSize != null)
+            access.whereQuery(params, Page((pid - 1) * pSize, pSize), converts = convertMap)
+        else access.whereQuery(params, converts = convertMap)
     }
-
-    val convertMap = model.fields.associate { it.id to it::convert }
 
     override fun wherePage(
         params: Map<String, Any>?,

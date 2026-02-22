@@ -5,7 +5,7 @@ import ako.annotation.ButtonPanel
 import ako.annotation.DbFlag
 import ako.annotation.DbName
 import ako.annotation.Description
-import ako.annotation.Mapping
+import ako.annotation.types.Mapping
 import ako.annotation.ModelButton
 import ako.annotation.PanelField
 import ako.`fun`.webError

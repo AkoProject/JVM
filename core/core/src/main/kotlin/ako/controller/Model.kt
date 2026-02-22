@@ -25,7 +25,14 @@ object Model {
             field.provider?.cast2Any()
                 ?.let {
                     information[it.id] =
-                        it.searchInformation(modelContext.model, field, field.options, information[it.id], all.list)
+                        it.searchInformation(
+                            modelContext,
+                            modelContext.model,
+                            field,
+                            field.options,
+                            information[it.id],
+                            all.list
+                        )
                 }
         }
 

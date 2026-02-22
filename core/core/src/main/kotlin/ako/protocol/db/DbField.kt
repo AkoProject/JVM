@@ -35,6 +35,7 @@ data class DbField(
 
     fun convert(value: Any?): Any? {
         if (value == null) return null
+        if (value is Collection<*>) return value.mapNotNull { convert(it) }
         val fieldType = field.type
         if (fieldType == String::class.java) return value.toString()
         if (fieldType == Boolean::class.javaPrimitiveType || fieldType == Boolean::class.javaObjectType) {

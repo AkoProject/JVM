@@ -1,6 +1,7 @@
 package ako.protocol.type
 
 import ako.annotation.AkoType
+import ako.model.base.ModelContext
 import ako.protocol.db.DbField
 import ako.protocol.db.DbModel
 import ako.protocol.search.SearchEntry
@@ -34,6 +35,7 @@ interface AkoTypeProvider<A : Annotation, OPT, RET> {
     ): OPT? = null
 
     fun searchInformation(
+        ctx: ModelContext<*>,
         model: DbModel<*>,
         field: DbField,
         opt: OPT?,

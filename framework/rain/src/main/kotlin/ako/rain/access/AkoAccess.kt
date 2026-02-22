@@ -6,6 +6,8 @@ import smartaccess.annotation.ProvideAccessTemple
 import smartaccess.item.Page
 import smartaccess.item.PageResult
 import smartaccess.jpa.access.JpaAccess
+import kotlin.String
+import kotlin.collections.Map
 
 @ProvideAccessTemple
 @MetadataProvider(AkoMetadataProvider::class)
@@ -17,7 +19,6 @@ interface AkoAccess<T : AkoModel> : JpaAccess<T, Int> {
             paras: Map<String, Any?>,
             converts: Map<String, (Any?) -> Any?>? = null
         ): Array<Any?> {
-            paras["deleteTime-isNull"]
             val paramList = ArrayList<Any?>()
             paras.forEach { (k, v) ->
 
@@ -69,18 +70,27 @@ interface AkoAccess<T : AkoModel> : JpaAccess<T, Int> {
         return count(queryBuilder.toString(), *paramList)
     }
 
-    fun whereQuery(paras: Map<String, Any?>, orderBy: String = "ASC"): List<T> {
+    fun whereQuery(
+        paras: Map<String, Any?>,
+        orderBy: String = "ASC",
+        converts: Map<String, (Any?) -> Any?>? = null
+    ): List<T> {
         val queryBuilder = StringBuilder("from $modelName where 1=1")
-        val paramList = margeWhereQuery(queryBuilder, paras)
+        val paramList = margeWhereQuery(queryBuilder, paras, converts)
 
         queryBuilder.append(" order by id $orderBy")
 
         return list(queryBuilder.toString(), *paramList)
     }
 
-    fun whereQuery(paras: Map<String, Any?>, page: Page = Page(0, 10), orderBy: String = "ASC"): List<T> {
+    fun whereQuery(
+        paras: Map<String, Any?>,
+        page: Page = Page(0, 10),
+        orderBy: String = "ASC",
+        converts: Map<String, (Any?) -> Any?>? = null
+    ): List<T> {
         val queryBuilder = StringBuilder("from $modelName where 1=1")
-        val paramList = margeWhereQuery(queryBuilder, paras)
+        val paramList = margeWhereQuery(queryBuilder, paras, converts)
 
         queryBuilder.append(" order by id $orderBy")
 
