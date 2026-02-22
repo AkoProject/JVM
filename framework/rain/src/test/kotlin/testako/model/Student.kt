@@ -9,7 +9,7 @@ import ako.annotation.PanelField
 import ako.annotation.types.DbEnum
 import ako.annotation.types.Mapping
 import ako.`fun`.webError
-import ako.model.CompleteModel
+import ako.model.base.CompleteModel
 import ako.rain.`fun`.findAccess
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

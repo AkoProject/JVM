@@ -1,4 +1,4 @@
-package ako.model
+package ako.model.base
 
 import ako.annotation.NoAkoField
 import com.alibaba.fastjson2.annotation.JSONField
@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column
 import jakarta.persistence.MappedSuperclass
 import org.hibernate.annotations.Filter
-import org.hibernate.annotations.FilterDef
 
 @MappedSuperclass
 @Filter(name = "_ako_soft_delete", condition = "delete_time = 0")

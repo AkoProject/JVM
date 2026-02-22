@@ -3,7 +3,7 @@ package testako.model
 import ako.access.SoftDeleteAccess
 import ako.annotation.DbName
 import ako.`fun`.webError
-import ako.model.CompleteModel
+import ako.model.base.CompleteModel
 import ako.rain.`fun`.findAccess
 import jakarta.persistence.Entity
 import jakarta.persistence.Table

@@ -1,6 +1,6 @@
 package ako.access
 
-import ako.model.SoftDeleteModel
+import ako.model.base.SoftDeleteModel
 import smartaccess.annotation.MetadataProvider
 import smartaccess.annotation.ProvideAccessTemple
 import smartaccess.jpa.access.QueryRewriter
