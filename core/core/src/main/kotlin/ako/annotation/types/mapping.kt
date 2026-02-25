@@ -44,7 +44,11 @@ data class MappingTarget(
 data class MappingOption(
     val cascader: String?,
     val values: Map<String, MappingTarget>
-)
+) {
+    @JsonIgnore
+    @JSONField(serialize = false)
+    var cascaderField: DbField? = null
+}
 
 class MappingTypeProvider : AkoTypeProvider<Annotation, MappingOption, HashMap<String, ArrayList<Any>>> {
     override val id: String
@@ -95,10 +99,16 @@ class MappingTypeProvider : AkoTypeProvider<Annotation, MappingOption, HashMap<S
         val ret = ret ?: HashMap()
         val needRead = HashMap<String, MutableSet<String>>()
 
-        data.forEach {
-            val value = field[it!!] ?: return@forEach
-            val mapping = opt.values[opt.cascader ?: "__blank__"] ?: return@forEach
-            needRead.getOrPut("${mapping.model}:${mapping.field}") { HashSet() }.add(value.toString())
+        data.forEach { row ->
+            val value = field[row!!] ?: return@forEach
+
+            opt.cascader?.let { cascader ->
+                if (opt.cascaderField == null)
+                    opt.cascaderField = ctx.model.fields.find { it.id == cascader }
+                        ?: error("模型 ${ctx.name} 中不存在字段 ${opt.cascader}！")
+                opt.cascaderField?.get(row)?.toString() ?: return@forEach
+            }.let { opt.values[it ?: "__blank__"] ?: return@forEach }
+                .let { needRead.getOrPut("${it.model}:${it.field}") { HashSet() }.add(value.toString()) }
         }
 
         needRead.forEach { (mCtx, ids) ->
