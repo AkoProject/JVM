@@ -1,11 +1,31 @@
 package ako
 
 import ako.annotation.MenuGroup
+import ako.annotation.types.EnumTypeProvider
 import ako.`fun`.webError
 import ako.protocol.DbModelMenu
 import ako.model.base.ModelContext
+import ako.protocol.type.AkoDefaultTypeProvider
+import ako.protocol.type.AkoTypeProvider
+import ako.protocol.type.InternalDefaultTypeProviderContainer
 
 object AkoService {
+
+
+    private val defaultProviders = ArrayList<InternalDefaultTypeProviderContainer>()
+
+    fun registerDefaultTypeProvider(priority: Int, provider: AkoDefaultTypeProvider) {
+        defaultProviders.add(InternalDefaultTypeProviderContainer(priority, provider))
+        defaultProviders.sortBy { it.priority }
+    }
+
+    fun findDefaultTypeProvider(fieldType: Class<*>): AkoTypeProvider<*, *, *>? {
+        for (container in defaultProviders) {
+            val provider = container.provider(fieldType)
+            if (provider != null) return provider
+        }
+        return null
+    }
 
     lateinit var runtime: AkoRuntime
         private set
@@ -35,7 +55,5 @@ object AkoService {
 
     fun modelOf(modelName: String): ModelContext<*> =
         runtime.modelMap[modelName] ?: webError(881001001, "模型 $modelName 不存在")
-
-
 
 }

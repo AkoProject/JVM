@@ -16,6 +16,7 @@ import ako.protocol.search.SearchInfo
 import ako.model.base.AkoModel
 import ako.protocol.db.CustomDbField
 import ako.protocol.type.AkoTypeProvider
+import ako.protocol.type.AkoTypeProvider.Companion.cast2Any
 import java.lang.reflect.AnnotatedElement
 import java.lang.reflect.Field
 import kotlin.reflect.jvm.kotlinProperty
@@ -160,6 +161,8 @@ fun AnnotatedElement.readFieldInfo(
             .forEach { at -> hitAnnotation(it, at) }
         else hitAnnotation(null, it)
     }
+
+    if (typeProvider == null) typeProvider = AkoService.findDefaultTypeProvider(fieldType)?.cast2Any()
 
     option = typeProvider?.readField(
         model,
