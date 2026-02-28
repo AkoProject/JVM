@@ -14,14 +14,14 @@ object AkoService {
         this.runtime = runtime
     }
 
-    val dbMenus = HashMap<String, ako.protocol.DbModelMenu>()
+    val dbMenus = HashMap<String, DbModelMenu>()
 
-    fun findMenu(annotation: MenuGroup): ako.protocol.DbModelMenu {
+    fun findMenu(annotation: MenuGroup): DbModelMenu {
         val id = annotation.id
         if (id == "") error("菜单组的 id 不能为空！")
 
         val menu = dbMenus.getOrPut(id) {
-            _root_ide_package_.ako.protocol.DbModelMenu(
+            DbModelMenu(
                 channel = "",
                 identifier = id,
                 iconNode = "default-entity-icon-node"
