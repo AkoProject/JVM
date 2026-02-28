@@ -1,6 +1,8 @@
 package ako.annotation.types
 
 import ako.annotation.AkoType
+import ako.annotation.DbName
+import ako.`fun`.annotation
 import ako.protocol.type.AkoTypeProvider
 import java.lang.reflect.Field
 
@@ -58,6 +60,9 @@ class EnumTypeProvider : AkoTypeProvider<Annotation, EnumOptions, Any> {
                 (dbEnum.flag.takeIf { it.isNotEmpty() } ?: index.toString()) to dbEnum.value.toEnumList()
             }.toMap()
         )
+        if (fieldType.isEnum) return fieldType.declaredFields.filter { it.isEnumConstant }
+            .map { EnumElement(it.name, it.annotation<DbName>()?.value ?: it.name) }
+            .let { EnumOptions(null, mapOf("__blank__" to it)) }
         return null
     }
 }

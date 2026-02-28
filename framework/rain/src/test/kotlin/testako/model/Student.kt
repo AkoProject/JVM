@@ -51,7 +51,18 @@ data class Student(
     @DbName("性别")
     @DbEnum("男", "女")
     var sex: Boolean = false,
+    @DbName("性别2")
+    var sex2: SEX = SEX.MAN,
 ) : CompleteModel() {
+
+    enum class SEX {
+        @DbName("男")
+        MAN,
+
+        @DbName("女")
+        WOMAN
+    }
+
     companion object : StudentAccess by findAccess() {
         fun notExist(): Nothing = webError(1000000, "Student不存在}")
         fun alreadyExist(): Nothing = webError(1000001, "Student已存在}")

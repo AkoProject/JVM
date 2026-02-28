@@ -32,6 +32,10 @@ object AkoService {
 
     fun initRuntime(runtime: AkoRuntime) {
         this.runtime = runtime
+        registerDefaultTypeProvider(100, AkoDefaultTypeProvider { fieldType ->
+            if (fieldType.isEnum) AkoService.runtime.getTypeProvider(EnumTypeProvider::class.java)
+            else null
+        })
     }
 
     val dbMenus = HashMap<String, DbModelMenu>()
