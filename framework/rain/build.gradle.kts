@@ -6,10 +6,15 @@ dependencies{
     api(project(":ako-core"))
     api(project(":ako-jpa"))
 
-    implementation("com.IceCreamQAQ.Rain:application:${rainVersion}")
-    implementation("com.IceCreamQAQ.Rain:controller:${rainVersion}")
-    implementation("com.IceCreamQAQ.SmartWeb.Server:SmartHTTP:$smartWebVersion")
-    implementation("com.IceCreamQAQ.SmartAccess:hibernate5:$smartAccessVersion")
+    compileOnly("com.IceCreamQAQ.Rain:application:$rainVersion")
+    compileOnly("com.IceCreamQAQ.Rain:controller:$rainVersion")
+    compileOnly("com.IceCreamQAQ.SmartWeb.Server:SmartHTTP:$smartWebVersion")
+    compileOnly("com.IceCreamQAQ.SmartAccess:hibernate5:$smartAccessVersion")
+
+    testImplementation("com.IceCreamQAQ.Rain:application:$rainVersion")
+    testImplementation("com.IceCreamQAQ.Rain:controller:$rainVersion")
+    testImplementation("com.IceCreamQAQ.SmartWeb.Server:SmartHTTP:$smartWebVersion")
+    testImplementation("com.IceCreamQAQ.SmartAccess:hibernate5:$smartAccessVersion")
 
 
     testImplementation("com.h2database:h2:2.4.240")
