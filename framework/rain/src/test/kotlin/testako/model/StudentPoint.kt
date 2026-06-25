@@ -7,6 +7,7 @@ import ako.annotation.Description
 import ako.annotation.types.Mapping
 import ako.annotation.ModelButton
 import ako.annotation.PanelField
+import ako.annotation.types.BinarySize
 import ako.annotation.types.DbEnum
 import ako.`fun`.webError
 import ako.model.base.CompleteModel
@@ -48,7 +49,8 @@ data class StudentPoint(
     @Mapping(Student::class, display = "name")
     @Column(name = "student_id")
     var student: Int = 0,
-    @DbName("绩点")
+    @DbName("配额")
+    @BinarySize
     var point: Int = 0,
 ) : CompleteModel() {
     companion object : StudentPointAccess by findAccess() {
