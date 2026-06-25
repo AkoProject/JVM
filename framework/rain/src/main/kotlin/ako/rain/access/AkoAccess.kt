@@ -125,7 +125,7 @@ interface AkoAccess<T : AkoModel> : JpaAccess<T, Int> {
     ): PageResult<T> {
         val queryBuilder = StringBuilder("from $modelName where 1=1")
         val paramList = margeWhereQuery(queryBuilder, paras, converts)
-        val query = queryBuilder.toString()
+        val noOrderByQuery = queryBuilder.toString()
 
         sort?.takeIf { it.isNotEmpty() }?.let {
             queryBuilder.append(" order by ")
@@ -138,9 +138,10 @@ interface AkoAccess<T : AkoModel> : JpaAccess<T, Int> {
 //            sort.forEach { (k, v) -> queryBuilder.append("$k $v,") }
 //            queryBuilder.deleteCharAt(queryBuilder.length - 1)
 //        }
+        val query = queryBuilder.toString()
 
         return PageResult(
-            count("select count(id) $query", *paramList),
+            count("select count(id) $noOrderByQuery", *paramList),
             list(query, page = page, *paramList)
         )
     }
