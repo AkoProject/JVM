@@ -21,5 +21,5 @@ data class Group(
     }
 }
 
-interface GroupAccess : SoftDeleteAccess<Group> {
+interface GroupAccess : SoftDeleteAccess<Group, Int> {
 }

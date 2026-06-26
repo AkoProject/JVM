@@ -59,6 +59,6 @@ data class StudentPoint(
     }
 }
 
-interface StudentPointAccess : SoftDeleteAccess<StudentPoint> {
+interface StudentPointAccess : SoftDeleteAccess<StudentPoint, Int> {
     fun findByStudent(student: Int): StudentPoint?
 }

@@ -6,20 +6,21 @@ import ako.model.base.AkoModel
 import ako.model.resp.PageResp
 import ako.protocol.db.DbModel
 import smartaccess.item.Page
+import java.io.Serializable
 
-class AkoRainModelContext<T : AkoModel>(
+class AkoRainModelContext<T : AkoModel, PK: Serializable>(
     override val name: String,
     override val type: Class<out T>,
     override val model: DbModel<out T>,
-    val access: AkoAccess<T>
+    val access: AkoAccess<T, PK>
 ) : ModelContext<T> {
 
     companion object {
         fun <T : AkoModel> create(
             name: String,
             model: DbModel<out T>,
-            access: AkoAccess<*>
-        ) = AkoRainModelContext(name, model.type, model, access as AkoAccess<T>)
+            access: AkoAccess<*, *>
+        ) = AkoRainModelContext(name, model.type, model, access as AkoAccess<T, *>)
     }
 
     val convertMap = model.fields.associate { it.id to it::convert }

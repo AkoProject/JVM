@@ -6,12 +6,13 @@ import smartaccess.annotation.ProvideAccessTemple
 import smartaccess.item.Page
 import smartaccess.item.PageResult
 import smartaccess.jpa.access.JpaAccess
+import java.io.Serializable
 import kotlin.String
 import kotlin.collections.Map
 
 @ProvideAccessTemple
 @MetadataProvider(AkoMetadataProvider::class)
-interface AkoAccess<T : AkoModel> : JpaAccess<T, Int> {
+interface AkoAccess<T : AkoModel, PK: Serializable> : JpaAccess<T, PK> {
 
     companion object {
         fun margeWhereQuery(

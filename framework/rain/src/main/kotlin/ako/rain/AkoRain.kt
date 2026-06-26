@@ -36,13 +36,13 @@ class AkoRain(
         (sa.defaultService as? JPAService)?.context ?: error("无法定位 JPAService 的实例！")
     }
 
-    val accessClass = ArrayList<Class<out AkoAccess<*>>>()
+    val accessClass = ArrayList<Class<out AkoAccess<*,*>>>()
 
     override fun register(clazz: Class<*>) {
         if (clazz == AkoAccess::class.java) return
         if (clazz == SoftDeleteAccess::class.java) return
         if (clazz.isInterface && AkoAccess::class.java.isAssignableFrom(clazz))
-            accessClass.add(clazz as Class<out AkoAccess<*>>)
+            accessClass.add(clazz as Class<out AkoAccess<*,*>>)
     }
 
     val accesses by lazy {

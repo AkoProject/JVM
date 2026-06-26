@@ -69,5 +69,5 @@ data class Student(
     }
 }
 
-interface StudentAccess : SoftDeleteAccess<Student> {
+interface StudentAccess : SoftDeleteAccess<Student, Int> {
 }

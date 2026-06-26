@@ -4,10 +4,11 @@ import ako.model.base.SoftDeleteModel
 import smartaccess.annotation.MetadataProvider
 import smartaccess.annotation.ProvideAccessTemple
 import smartaccess.jpa.access.QueryRewriter
+import java.io.Serializable
 
 @ProvideAccessTemple
 @MetadataProvider(AkoMetadataProvider::class)
-interface SoftDeleteAccess<T : SoftDeleteModel> : AkoAccess<T> {
+interface SoftDeleteAccess<T : SoftDeleteModel, PK : Serializable> : AkoAccess<T, PK> {
 
     override val executeRewriter: QueryRewriter?
         get() = QueryRewriter {
