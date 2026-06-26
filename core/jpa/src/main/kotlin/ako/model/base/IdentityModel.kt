@@ -13,7 +13,7 @@ open class IdentityModel: AkoModelBase() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @DbName("编号")
-    @TableColumnWidth(100)
     @SearchIgnore
-    override var id: Int? = null
+    @TableColumnWidth(200)
+    var id: Int? = null
 }
