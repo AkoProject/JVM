@@ -1,7 +1,7 @@
 package ako.model.base
 
 import ako.annotation.DbName
-import ako.annotation.SearchIgnore
+import ako.annotation.EditIgnore
 import ako.annotation.TableColumnWidth
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -13,7 +13,7 @@ open class IdentityModel: AkoModelBase() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @DbName("编号")
-    @SearchIgnore
+    @EditIgnore
     @TableColumnWidth(200)
     var id: Int? = null
 }

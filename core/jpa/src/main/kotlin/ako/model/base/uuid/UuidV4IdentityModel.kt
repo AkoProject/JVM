@@ -1,7 +1,7 @@
 package ako.model.base.uuid
 
 import ako.annotation.DbName
-import ako.annotation.SearchIgnore
+import ako.annotation.EditIgnore
 import ako.annotation.TableColumnWidth
 import ako.model.base.AkoModelBase
 import jakarta.persistence.GeneratedValue
@@ -16,6 +16,6 @@ open class UuidV4IdentityModel: AkoModelBase() {
     @GeneratedValue(strategy = GenerationType.UUID)
     @DbName("编号")
     @TableColumnWidth(100)
-    @SearchIgnore
+    @EditIgnore
     var id: UUID? = null
 }
