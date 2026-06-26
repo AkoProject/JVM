@@ -33,6 +33,7 @@ abstract class AkoModelBase : AkoModel {
     @PrePersist
     fun prePersist() {
         createTime = System.currentTimeMillis()
+        updateTime = System.currentTimeMillis()
     }
 
     @PreUpdate
