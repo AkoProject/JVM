@@ -1,7 +1,7 @@
 
 val rainVersion = "1.0.0-DEV7"
 val smartWebVersion = "1.0.0-DEV9"
-val smartAccessVersion = "1.0.0-DEV6"
+val smartAccessVersion = "1.0.0-DEV11"
 dependencies{
     api(project(":ako-core"))
     api(project(":ako-jpa"))
