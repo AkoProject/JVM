@@ -11,6 +11,7 @@ import ako.protocol.type.AkoTypeProvider
 import com.alibaba.fastjson2.annotation.JSONField
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.lang.reflect.Field
+import java.util.UUID
 
 data class DbField(
     @field:JsonIgnore
@@ -52,6 +53,7 @@ data class DbField(
                 Long::class.javaPrimitiveType, Long::class.javaObjectType -> value.toLong()
                 Float::class.javaPrimitiveType, Float::class.javaObjectType -> value.toFloat()
                 Double::class.javaPrimitiveType, Double::class.javaObjectType -> value.toDouble()
+                UUID::class.java -> UUID.fromString(value)
                 else -> value
             }
         return value

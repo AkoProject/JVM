@@ -47,7 +47,7 @@ object Model {
         modelContext.akoPostSave(data)
     }
 
-    fun delete(model: String, ids: List<Int>) {
+    fun delete(model: String, ids: List<String>) {
         val modelContext = AkoService.modelOf(model)
         ids.forEach { modelContext.delete(it) }
     }

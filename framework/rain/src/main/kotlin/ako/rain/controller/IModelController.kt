@@ -16,7 +16,7 @@ interface IModelController {
     }
 
     @PostAction("delete/{model}")
-    fun delete(model: String, @RequestBody ids: List<Int>/*, user: AkoUser*/) = transaction {
+    fun delete(model: String, @RequestBody ids: List<String>/*, user: AkoUser*/) = transaction {
         Model.delete(model, ids)
     }
 

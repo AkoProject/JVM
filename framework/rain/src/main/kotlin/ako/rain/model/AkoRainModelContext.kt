@@ -60,6 +60,6 @@ class AkoRainModelContext<T : AkoModel, PK: Serializable>(
 
     override fun save(data: T) = access.saveOrUpdate(data)
 
-    override fun delete(id: Int) = access.delete(id)
+    override fun delete(id: String) = access.delete(model.idField.convert(id) as PK)
 
 }

@@ -25,6 +25,6 @@ interface ModelContext<T : AkoModel> {
     fun akoPostSave(data: T)
 
     fun save(data: T)
-    fun delete(id: Int)
+    fun delete(id: String)
 
 }
