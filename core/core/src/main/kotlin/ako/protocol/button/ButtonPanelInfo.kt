@@ -7,6 +7,7 @@ data class ButtonPanelInfo(
     val name: String,
     val url: String?,
     val method: String?,
+    val data: String?,
     val editNode: String?,
     val fields: List<CustomEditField>,
 )

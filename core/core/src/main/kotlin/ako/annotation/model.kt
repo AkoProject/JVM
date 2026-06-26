@@ -123,6 +123,7 @@ annotation class ButtonPanel(
     val name: String = "",
     val url: String = "",
     val method: String = "",
+    val data: String = "",
     vararg val fields: PanelField
 ) {
     companion object {
@@ -132,6 +133,7 @@ annotation class ButtonPanel(
                 name,
                 url.notEmptyOrNull(),
                 method.notEmptyOrNull(),
+                data.notEmptyOrNull(),
                 "default-entity-edit-node",
                 fields.map { it.toCustomEditField(id) }
             )
