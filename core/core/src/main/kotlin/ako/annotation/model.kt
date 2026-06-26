@@ -46,6 +46,8 @@ annotation class NoAkoModel
  * @param reconfirm 二次确认提示内容
  * @param type 按钮颜色，对应 ElementPlus ElButton 组件的 type 属性
  * @param component 按钮组件名，若不为空，则使用该组件渲染按钮
+ * @param dialog 弹框，若提供组件名，则在点击后展示一个以该组件为内容的 Dialog。
+ * @param panel 面板，以设定格式创建一个 Ako Edit 面板
  *
  * 若 eval 不为空，则会执行 eval 代码。
  * 若 eval 为空则会请求 url。
