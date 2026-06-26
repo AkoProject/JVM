@@ -37,14 +37,27 @@ data class DbModel<T : AkoModel>(
     @field:JSONField(serialize = false)
     val mappings = HashMap<String, MappingEntry>()
 
-    val fields: List<DbField> = ArrayList<DbField>().apply {
-        add(type.allField.find { it.name == "id" }!!.dbField)
+    val idField: DbField
+    val fields: List<DbField>
+
+    companion object{
+        private val jpaId = runCatching { Class.forName("jakarta.persistence.Id") }.getOrNull() as? Class<out Annotation>
+    }
+
+    init {
+        val allField = type.allField
+        val idField = allField.find { if (jpaId != null) it.getAnnotation(jpaId) != null else it.name == "id" }
+            ?: error("模型 $id 没有 id 字段！")
+        this.idField = idField.dbField
+        val fields = ArrayList<DbField>()
+        fields.add(this.idField)
         type.allField
             .asSequence()
-            .filter { it.name != "id" }
+            .filter { it != idField }
             .filter { !it.isStatic }
             .filter { !it.hasAnnotation<NoAkoField>() }
-            .forEach { add(it.dbField) }
+            .forEach { fields.add(it.dbField) }
+        this.fields = fields
     }
 
 }
