@@ -50,7 +50,6 @@ data class StudentPoint(
     @Column(name = "student_id")
     var student: Int = 0,
     @DbName("配额")
-    @BinarySize
     var point: Int = 0,
 ) : CompleteModel() {
     companion object : StudentPointAccess by findAccess() {

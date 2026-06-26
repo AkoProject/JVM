@@ -23,6 +23,7 @@ import jakarta.persistence.Table
     panel = ButtonPanel(
         url = "/api/student/\${id}/point",
         method = "patch",
+        data = "({})",
         fields = [
             PanelField(
                 "mode",
