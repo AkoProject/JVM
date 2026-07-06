@@ -33,7 +33,8 @@ object AkoService {
     fun initRuntime(runtime: AkoRuntime) {
         this.runtime = runtime
         registerDefaultTypeProvider(100, AkoDefaultTypeProvider { fieldType ->
-            if (fieldType.isEnum) AkoService.runtime.getTypeProvider(EnumTypeProvider::class.java)
+            if (fieldType.isEnum || fieldType == Boolean::class.javaObjectType || fieldType == Boolean::class.javaPrimitiveType)
+                AkoService.runtime.getTypeProvider(EnumTypeProvider::class.java)
             else null
         })
     }

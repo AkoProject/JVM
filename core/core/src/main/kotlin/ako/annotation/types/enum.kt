@@ -63,6 +63,11 @@ class EnumTypeProvider : AkoTypeProvider<Annotation, EnumOptions, Any> {
         if (fieldType.isEnum) return fieldType.declaredFields.filter { it.isEnumConstant }
             .map { EnumElement(it.name, it.annotation<DbName>()?.value ?: it.name) }
             .let { EnumOptions(null, mapOf("__blank__" to it)) }
+        if (fieldType == Boolean::class.javaPrimitiveType || fieldType == Boolean::class.javaObjectType)
+            return EnumOptions(
+                null,
+                mapOf("__blank__" to listOf(EnumElement("true", "是"), EnumElement("false", "否")))
+            )
         return null
     }
 }
