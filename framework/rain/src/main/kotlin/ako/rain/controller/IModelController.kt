@@ -1,6 +1,7 @@
-package ako.controller
+package ako.rain.controller
 
 import ako.AkoService
+import ako.controller.Model
 import ako.model.req.ModelPageReq
 import ako.model.resp.ModelPageResp
 import ako.rain.`fun`.transaction

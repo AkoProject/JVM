@@ -1,5 +1,6 @@
-package ako.controller
+package ako.rain.controller
 
+import ako.controller.Menu
 import smartweb.annotation.GetAction
 import javax.inject.Named
 

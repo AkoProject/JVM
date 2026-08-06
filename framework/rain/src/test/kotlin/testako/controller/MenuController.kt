@@ -1,9 +1,7 @@
 package testako.controller
 
-import ako.controller.IMenuController
-import ako.controller.Menu
+import ako.rain.controller.IMenuController
 import rain.controller.annotation.Path
-import smartweb.annotation.GetAction
 import smartweb.annotation.WebController
 
 @Path("menu")
