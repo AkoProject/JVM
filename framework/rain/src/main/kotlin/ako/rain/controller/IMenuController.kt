@@ -1,11 +1,12 @@
 package ako.controller
 
 import smartweb.annotation.GetAction
+import javax.inject.Named
 
 @JvmDefaultWithoutCompatibility
 interface IMenuController {
 
     @GetAction("list/{channel}")
-    fun list(channel: String/*, user: AkoUser*/): Map<String, Any> = Menu.list(channel)
+    fun list(@Named("channel") channel: String/*, user: AkoUser*/): Map<String, Any> = Menu.list(channel)
 
 }
