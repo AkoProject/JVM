@@ -2,6 +2,7 @@ package ako.controller
 
 import smartweb.annotation.GetAction
 
+@JvmDefaultWithoutCompatibility
 interface IMenuController {
 
     @GetAction("list/{channel}")

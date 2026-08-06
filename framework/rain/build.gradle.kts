@@ -19,3 +19,9 @@ dependencies{
 
     testImplementation("com.h2database:h2:2.4.240")
 }
+
+kotlin {
+    compilerOptions{
+        freeCompilerArgs.add("-jvm-default=enable")
+    }
+}

@@ -8,6 +8,7 @@ import com.alibaba.fastjson2.JSON
 import smartweb.annotation.PostAction
 import smartweb.annotation.RequestBody
 
+@JvmDefaultWithoutCompatibility
 interface IModelController {
 
     @PostAction("page/{model}")
