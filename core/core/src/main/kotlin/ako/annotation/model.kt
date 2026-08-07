@@ -220,7 +220,7 @@ annotation class OperateButton(
 ) {
     companion object {
         fun OperateButton.toModelButton() =
-            _root_ide_package_.ako.protocol.button.ButtonEntry(
+            ButtonEntry(
                 name,
                 index,
                 url,
