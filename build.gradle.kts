@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("jvm") version "2.1.20"
+    kotlin("jvm") version "2.4.0"
     id("org.jetbrains.dokka") version "2.0.0"
     java
     `java-library`
