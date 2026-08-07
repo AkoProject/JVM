@@ -17,5 +17,5 @@ open class UuidV4IdentityModel: AkoModelBase() {
     @DbName("编号")
     @TableColumnWidth(100)
     @EditIgnore
-    var id: UUID? = null
+    open var id: UUID? = null
 }

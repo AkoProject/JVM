@@ -22,5 +22,5 @@ open class UuidV4CompleteModel : SoftDeleteModel() {
     @DbName("编号")
     @EditIgnore
     @TableColumnWidth(200)
-    var id: UUID? = null
+    open var id: UUID? = null
 }

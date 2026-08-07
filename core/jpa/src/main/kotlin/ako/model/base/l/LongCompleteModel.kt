@@ -16,5 +16,5 @@ open class LongCompleteModel : SoftDeleteModel() {
     @DbName("编号")
     @EditIgnore
     @TableColumnWidth(100)
-    var id: Long? = null
+    open var id: Long? = null
 }

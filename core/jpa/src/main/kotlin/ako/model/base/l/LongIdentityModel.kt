@@ -16,5 +16,5 @@ open class LongIdentityModel: AkoModelBase() {
     @DbName("编号")
     @TableColumnWidth(100)
     @EditIgnore
-    var id: Long? = null
+    open var id: Long? = null
 }

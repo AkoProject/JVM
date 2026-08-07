@@ -15,5 +15,5 @@ open class IdentityModel: AkoModelBase() {
     @DbName("编号")
     @EditIgnore
     @TableColumnWidth(200)
-    var id: Int? = null
+    open var id: Int? = null
 }
