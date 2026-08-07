@@ -4,7 +4,6 @@ import ako.controller.Menu
 import smartweb.annotation.GetAction
 import javax.inject.Named
 
-@JvmDefaultWithoutCompatibility
 interface IMenuController {
 
     @GetAction("list/{channel}")

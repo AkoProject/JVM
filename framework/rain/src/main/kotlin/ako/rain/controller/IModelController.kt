@@ -10,7 +10,6 @@ import smartweb.annotation.PostAction
 import smartweb.annotation.RequestBody
 import javax.inject.Named
 
-@JvmDefaultWithoutCompatibility
 interface IModelController {
 
     @PostAction("page/{model}")
