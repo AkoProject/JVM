@@ -1,4 +1,4 @@
-package ako.access
+package ako.rain.access
 
 import ako.model.base.SoftDeleteModel
 import smartaccess.annotation.MetadataProvider

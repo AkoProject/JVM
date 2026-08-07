@@ -1,6 +1,6 @@
 package ako.rain.model
 
-import ako.access.AkoAccess
+import ako.rain.access.AkoAccess
 import ako.model.base.ModelContext
 import ako.model.base.AkoModel
 import ako.model.resp.PageResp

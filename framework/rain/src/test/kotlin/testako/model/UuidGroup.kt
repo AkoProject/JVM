@@ -1,6 +1,6 @@
 package testako.model
 
-import ako.access.SoftDeleteAccess
+import ako.rain.access.SoftDeleteAccess
 import ako.annotation.DbName
 import ako.`fun`.webError
 import ako.model.base.uuid.UuidV4CompleteModel

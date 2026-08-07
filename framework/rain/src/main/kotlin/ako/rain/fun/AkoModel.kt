@@ -1,6 +1,6 @@
 package ako.rain.`fun`
 
-import ako.access.AkoAccess
+import ako.rain.access.AkoAccess
 import ako.model.base.AkoModel
 import ako.rain.AkoRain
 

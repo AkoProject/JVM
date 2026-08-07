@@ -2,8 +2,8 @@ package ako.rain
 
 import ako.AkoRuntime
 import ako.AkoService
-import ako.access.AkoAccess
-import ako.access.SoftDeleteAccess
+import ako.rain.access.AkoAccess
+import ako.rain.access.SoftDeleteAccess
 import ako.annotation.NoAkoModel
 import ako.`fun`.dbModel
 import ako.model.base.ModelContext

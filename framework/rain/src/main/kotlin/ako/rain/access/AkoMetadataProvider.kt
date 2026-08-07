@@ -1,4 +1,4 @@
-package ako.access
+package ako.rain.access
 
 import smartaccess.access.Access
 import smartaccess.access.AccessMetadataProvider

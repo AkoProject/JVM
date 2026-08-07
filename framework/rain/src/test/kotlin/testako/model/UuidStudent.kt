@@ -1,11 +1,10 @@
 package testako.model
 
-import ako.access.SoftDeleteAccess
+import ako.rain.access.SoftDeleteAccess
 import ako.annotation.DbName
 import ako.annotation.types.DbEnum
 import ako.annotation.types.Mapping
 import ako.`fun`.webError
-import ako.model.base.CompleteModel
 import ako.model.base.uuid.UuidV4CompleteModel
 import ako.rain.`fun`.findAccess
 import jakarta.persistence.AttributeOverride

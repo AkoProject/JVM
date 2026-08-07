@@ -1,18 +1,11 @@
 package testako.model
 
-import ako.access.SoftDeleteAccess
-import ako.annotation.ButtonPanel
+import ako.rain.access.SoftDeleteAccess
 import ako.annotation.DbName
-import ako.annotation.Description
-import ako.annotation.types.Mapping
-import ako.annotation.ModelButton
-import ako.annotation.PanelField
 import ako.annotation.types.BinarySize
-import ako.annotation.types.DbEnum
 import ako.`fun`.webError
 import ako.model.base.CompleteModel
 import ako.rain.`fun`.findAccess
-import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
 
