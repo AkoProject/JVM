@@ -50,20 +50,27 @@ class AkoSpringDataDatabaseTest {
     fun `spring data repositories are exposed through the ako model context`() {
         repository.deleteAll()
         val saved = repository.save(TestEntity().apply { name = "Alice" })
+        val second = repository.save(TestEntity().apply { name = "Bob" })
         val modelContext = runtime.modelMap["TestEntity"]
         assertNotNull(modelContext)
 
         val page = modelContext.wherePage(
             params = mapOf("name_like" to "A%"),
             sort = mapOf("id" to "ASC"),
-            pid = 0,
+            pid = 1,
             pSize = 20,
         )
         assertEquals(1, page.total)
         assertEquals(saved.id, (page.list.single() as TestEntity).id)
 
+        val firstPage = modelContext.wherePage(emptyMap(), null, 1, 1)
+        val secondPage = modelContext.wherePage(emptyMap(), null, 2, 1)
+        assertEquals("Alice", (firstPage.list.single() as TestEntity).name)
+        assertEquals(second.id, (secondPage.list.single() as TestEntity).id)
+
         modelContext.delete(saved.id.toString())
-        assertFalse(modelContext.whereList().isNotEmpty())
+        assertFalse(modelContext.whereList().isEmpty())
+        assertEquals(second.id, (modelContext.whereList().single() as TestEntity).id)
     }
 
     @Test
@@ -78,7 +85,7 @@ class AkoSpringDataDatabaseTest {
         assertTrue(menu.body().contains("\"id\":\"TestEntity\""))
 
         val pageBody = """
-            {"page":0,"size":20,"params":{"name_like":"A%"},"sort":{"id":"ASC"}}
+            {"page":1,"size":20,"params":{"name_like":"A%"},"sort":{"id":"ASC"}}
         """.trimIndent()
         val page = request("POST", "/api/ako/model/page/TestEntity", pageBody)
         assertEquals(200, page.statusCode())
@@ -91,7 +98,7 @@ class AkoSpringDataDatabaseTest {
         val delete = request("POST", "/api/ako/model/delete/TestEntity", "[\"${saved.id}\"]")
         assertEquals(200, delete.statusCode())
 
-        val remaining = request("POST", "/api/ako/model/page/TestEntity", "{\"page\":0,\"size\":20}")
+        val remaining = request("POST", "/api/ako/model/page/TestEntity", "{\"page\":1,\"size\":20}")
         assertEquals(200, remaining.statusCode())
         assertTrue(remaining.body().contains("\"total\":1"))
         assertTrue(remaining.body().contains("\"name\":\"Bob\""))

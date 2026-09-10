@@ -54,8 +54,9 @@ open class AkoSpringDataDatabase(
     ): List<T> = inTransaction {
         val query = createQuery(model, params, sort)
         if (page != null && size != null) {
-            query.firstResult = page.coerceAtLeast(0) * size.coerceAtLeast(1)
-            query.maxResults = size.coerceAtLeast(1)
+            val safeSize = size.coerceAtLeast(1)
+            query.firstResult = pageOffset(page, safeSize)
+            query.maxResults = safeSize
         }
 
         @Suppress("UNCHECKED_CAST")
@@ -69,10 +70,10 @@ open class AkoSpringDataDatabase(
         page: Int,
         size: Int,
     ): PageResp<T> = inTransaction {
-        val safePage = page.coerceAtLeast(0)
+        val safePage = page.coerceAtLeast(1)
         val safeSize = size.coerceAtLeast(1)
         val dataQuery = createQuery(model, params, sort)
-        dataQuery.firstResult = safePage * safeSize
+        dataQuery.firstResult = pageOffset(safePage, safeSize)
         dataQuery.maxResults = safeSize
 
         val countQuery = createCountQuery(model, params)
@@ -214,7 +215,7 @@ open class AkoSpringDataDatabase(
         val entries: List<Pair<String, String>> = sort?.entries
             ?.map { it.key to it.value }
             ?.takeIf { it.isNotEmpty() }
-            ?: listOf(model.idField.id to "DESC")
+            ?: listOf(model.idField.id to "ASC")
 
         return entries.map { (fieldId, direction) ->
             val field = model.fields.firstOrNull { it.id == fieldId }
@@ -263,6 +264,10 @@ open class AkoSpringDataDatabase(
     @Suppress("UNCHECKED_CAST")
     private fun <R> inTransaction(block: () -> R): R =
         transactionTemplate.execute { block() } as R
+
+    /** Ako's frontend page id is 1-based: page 1 starts at offset 0. */
+    private fun pageOffset(page: Int, size: Int): Int =
+        (page.coerceAtLeast(1) - 1) * size.coerceAtLeast(1)
 
     @Suppress("UNCHECKED_CAST")
     private fun discoverRepositories(): Map<Class<out AkoModel>, JpaRepository<Any, Any>> {

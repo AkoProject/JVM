@@ -47,6 +47,9 @@ class School : CompleteModel() {
 普通的 `JpaRepository<Model, Id>` Bean 也会被自动发现并用于模型分页；继承
 `AkoJpaRepository` 后，还可以通过 `findAccess()` 获取该 Repository。
 
+分页参数 `page`/`pid` 按 Ako 前端约定从 `1` 开始，第一页对应偏移量 `0`。
+未传入排序条件时，默认按 `id ASC` 排序。
+
 如果使用其他数据库，只需提供一个 `AkoSpringDatabase` Bean，声明它负责的模型，
 并实现列表查询、分页查询、保存和删除操作即可。Ako 的元数据处理和模型生命周期
 仍由公共层统一完成。

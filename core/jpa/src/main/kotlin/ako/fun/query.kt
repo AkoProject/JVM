@@ -47,7 +47,7 @@ fun <T : AkoModel> whereList(
 
     val sort = sort?.let {
         it.entries.joinToString(prefix = "ORDER BY ", separator = ", ") { (key, value) -> "$key $value" }
-    } ?: "ORDER BY a.id DESC"
+    } ?: "ORDER BY a.id ASC"
 
     val searchQuery = createQuery("FROM $name a ${where ?: ""} $sort", model.type)
     params?.forEach { (k, v) ->
@@ -73,7 +73,7 @@ fun <T : AkoModel> wherePage(
 
     val sort = sort?.let {
         it.entries.joinToString(prefix = "ORDER BY ", separator = ", ") { (key, value) -> "$key $value" }
-    } ?: "ORDER BY a.id DESC"
+    } ?: "ORDER BY a.id ASC"
 
     val searchQuery = createQuery("FROM $name a ${where ?: ""} $sort", model.type) as TypedQuery<T>
     val countQuery = createQuery("SELECT COUNT(*) FROM $name a ${where ?: ""}", null)
