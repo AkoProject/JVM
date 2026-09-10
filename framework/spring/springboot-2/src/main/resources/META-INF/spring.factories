@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=ako.spring.boot2.AkoSpringBoot2AutoConfiguration
