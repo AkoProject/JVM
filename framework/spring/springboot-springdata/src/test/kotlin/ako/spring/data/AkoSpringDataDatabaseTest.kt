@@ -1,5 +1,6 @@
 package ako.spring.data
 
+import ako.AkoService
 import ako.model.base.CompleteModel
 import ako.controller.Menu
 import ako.controller.Model
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import tools.jackson.databind.JsonNode
+import tools.jackson.databind.ObjectMapper
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -147,7 +150,7 @@ open class TestAkoMenuController {
 
 @RestController
 @RequestMapping("/api/ako/model")
-open class TestAkoModelController {
+open class TestAkoModelController(private val objectMapper: ObjectMapper) {
     @PostMapping("/page/{model}")
     fun page(
         @PathVariable model: String,
@@ -157,8 +160,11 @@ open class TestAkoModelController {
     @PostMapping("/save/{model}")
     fun save(
         @PathVariable model: String,
-        @RequestBody data: TestEntity,
-    ) = transaction { Model.save(model, data) }
+        @RequestBody data: JsonNode,
+    ) = transaction {
+        val mc = AkoService.modelOf(model)
+        Model.save(model, objectMapper.treeToValue(data, mc.type))
+    }
 
     @PostMapping("/delete/{model}")
     fun delete(
