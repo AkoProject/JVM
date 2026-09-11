@@ -21,6 +21,12 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.http.MediaType
 import org.springframework.boot.test.web.server.LocalServerPort
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -131,32 +137,32 @@ open class TestEntity : CompleteModel() {
     companion object : TestEntityRepository by findAccess()
 }
 
-@org.springframework.web.bind.annotation.RestController
-@org.springframework.web.bind.annotation.RequestMapping("/api/ako/menu")
+@RestController
+@RequestMapping("/api/ako/menu")
 open class TestAkoMenuController {
-    @org.springframework.web.bind.annotation.GetMapping("/list/{channel}")
-    fun list(@org.springframework.web.bind.annotation.PathVariable channel: String): Map<String, Any> =
+    @GetMapping("/list/{channel}")
+    fun list(@PathVariable channel: String): Map<String, Any> =
         Menu.list(channel)
 }
 
-@org.springframework.web.bind.annotation.RestController
-@org.springframework.web.bind.annotation.RequestMapping("/api/ako/model")
+@RestController
+@RequestMapping("/api/ako/model")
 open class TestAkoModelController {
-    @org.springframework.web.bind.annotation.PostMapping("/page/{model}")
+    @PostMapping("/page/{model}")
     fun page(
-        @org.springframework.web.bind.annotation.PathVariable model: String,
-        @org.springframework.web.bind.annotation.RequestBody data: ModelPageReq,
+        @PathVariable model: String,
+        @RequestBody data: ModelPageReq,
     ) = transaction { Model.page(model, data) }
 
-    @org.springframework.web.bind.annotation.PostMapping("/save/{model}")
+    @PostMapping("/save/{model}")
     fun save(
-        @org.springframework.web.bind.annotation.PathVariable model: String,
-        @org.springframework.web.bind.annotation.RequestBody data: TestEntity,
+        @PathVariable model: String,
+        @RequestBody data: TestEntity,
     ) = transaction { Model.save(model, data) }
 
-    @org.springframework.web.bind.annotation.PostMapping("/delete/{model}")
+    @PostMapping("/delete/{model}")
     fun delete(
-        @org.springframework.web.bind.annotation.PathVariable model: String,
-        @org.springframework.web.bind.annotation.RequestBody ids: List<String>,
+        @PathVariable model: String,
+        @RequestBody ids: List<String>,
     ) = transaction { Model.delete(model, ids) }
 }
