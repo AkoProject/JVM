@@ -147,8 +147,8 @@ interface AkoAccess<T : AkoModel, PK : Serializable> : JpaAccess<T, PK> {
         )
     }
 
-    override fun akoPreSave(data: T) {}
+    fun akoPreSave(data: T) {}
 
-    override fun akoPostSave(data: T) {}
+    fun akoPostSave(data: T) {}
 
 }
