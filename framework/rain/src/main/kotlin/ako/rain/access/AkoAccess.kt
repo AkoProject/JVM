@@ -12,7 +12,7 @@ import kotlin.collections.Map
 
 @ProvideAccessTemple
 @MetadataProvider(AkoMetadataProvider::class)
-interface AkoAccess<T : AkoModel, PK: Serializable> : JpaAccess<T, PK> {
+interface AkoAccess<T : AkoModel, PK : Serializable> : JpaAccess<T, PK> {
 
     companion object {
         fun margeWhereQuery(
@@ -146,5 +146,9 @@ interface AkoAccess<T : AkoModel, PK: Serializable> : JpaAccess<T, PK> {
             list(query, page = page, *paramList)
         )
     }
+
+    override fun akoPreSave(data: T) {}
+
+    override fun akoPostSave(data: T) {}
 
 }
