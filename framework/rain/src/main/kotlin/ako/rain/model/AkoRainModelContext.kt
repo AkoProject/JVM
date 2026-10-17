@@ -51,7 +51,7 @@ class AkoRainModelContext<T : AkoModel, PK: Serializable>(
     ).let { PageResp(pid, pSize, it.total.toInt(), it.data) }
 
     override fun akoPreSave(data: T) {
-        access.akoPostSave(data)
+        access.akoPreSave(data)
     }
 
     override fun akoPostSave(data: T) {
